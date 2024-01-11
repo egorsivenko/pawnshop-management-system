@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Pawnshop Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand disabled" href="#">Pawnshop Management System</a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/customers}">Customers</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+
+    <div class = "container">
+        <div class = "col-lg-6 container justify-content-center card">
+            <h2 class = "text-center">Add New Customer</h2>
+            <div class = "card-body">
+                <form th:action = "@{/customers}" th:object = "${customer}" method = "POST">
+                    <div class = "form-group">
+                        <label>Customer First Name</label>
+                        <input type = "text" name = "first-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{firstName}" class = "form-control" placeholder = "First name">
+                    </div>
+
+                    <div class = "form-group">
+                        <label>Customer Last Name</label>
+                        <input type = "text" name = "last-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{lastName}" class = "form-control" placeholder = "Last name">
+                    </div>
+
+                    <div class = "form-group">
+                        <label>Customer Contact Number</label>
+                        <input type = "text" name = "contact-number" required = "required" pattern = "^[0-9]{3}-[0-9]{3}-[0-9]{4}$" th:field = "*{contactNumber}" class = "form-control" placeholder = "Contact number">
+                    </div>
+
+                    <div class = "form-group">
+                        <label>Customer Email</label>
+                        <input type = "text" name = "email" required = "required" pattern = "^[a-zA-Z0-9._]+@[a-z]+\.[a-z]{2,4}$" th:field = "*{email}" class = "form-control" placeholder = "Email">
+                    </div>
+
+                    <div class = "box-footer">
+                        <button type = "submit" class = "btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

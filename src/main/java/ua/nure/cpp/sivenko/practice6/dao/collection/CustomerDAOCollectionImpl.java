@@ -53,8 +53,8 @@ public class CustomerDAOCollectionImpl implements CustomerDAO {
     }
 
     @Override
-    public void updateCustomer(Customer customer) {
-        customers.set((int) customer.getCustomerId() - 1, customer);
+    public void updateCustomer(long customerId, Customer customer) {
+        customers.set((int) customerId - 1, customer);
     }
 
     @Override
