@@ -41,31 +41,34 @@
             </ul>
         </div>
     </nav>
-    <br>
 
-    <div class = "container">
-        <div class = "col-lg-6 container justify-content-center card">
-            <h2 class = "text-center">Add New Repayment</h2>
-            <div class = "card-body">
-                <form th:action = "@{/repayments}" th:object = "${repayment}" method = "POST">
-                    <div class = "form-group">
-                        <label>Repayment Transaction ID</label>
-                        <input type = "text" name = "transaction-id" required = "required" th:field = "*{transactionId}" class = "form-control" placeholder = "Transaction ID">
-                    </div>
+    <div class="container">
+        <h1>Payment Methods List</h1>
 
-                    <div class = "form-group">
-                        <label>Repayment Payment Method ID</label>
-                        <input type = "text" name = "payment-method-id" required = "required" th:field = "*{paymentMethod}" class = "form-control" placeholder = "Payment Method">
-                    </div>
-
-                    <div class = "box-footer">
-                        <button type = "submit" class = "btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div class="col-lg-6">
+            <a th:href = "@{paymentMethods/add}" class = "btn btn-outline-primary mb-3">Add Payment Method</a>
         </div>
+
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="paymentMethod : ${paymentMethods}">
+                <td th:text="${paymentMethod.paymentMethodId}"></td>
+                <td th:text="${paymentMethod.paymentMethodName}"></td>
+                <td>
+                    <a th:href = "@{/paymentMethods/edit/{paymentMethodId}(paymentMethodId=${paymentMethod.paymentMethodId})}" class = "btn btn-info">Update</a>
+                    <a th:href = "@{/paymentMethods/{paymentMethodId}(paymentMethodId=${paymentMethod.paymentMethodId})}" class = "btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

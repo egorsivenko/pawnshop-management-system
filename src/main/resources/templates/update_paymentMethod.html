@@ -45,17 +45,12 @@
 
     <div class = "container">
         <div class = "col-lg-6 container justify-content-center card">
-            <h2 class = "text-center">Add New Repayment</h2>
+            <h1 class = "text-center">Update Payment Method</h1>
             <div class = "card-body">
-                <form th:action = "@{/repayments}" th:object = "${repayment}" method = "POST">
+                <form th:action = "@{/paymentMethods/{paymentMethodId}(paymentMethodId=${paymentMethod.paymentMethodId})}" th:object = "${paymentMethod}" method = "POST">
                     <div class = "form-group">
-                        <label>Repayment Transaction ID</label>
-                        <input type = "text" name = "transaction-id" required = "required" th:field = "*{transactionId}" class = "form-control" placeholder = "Transaction ID">
-                    </div>
-
-                    <div class = "form-group">
-                        <label>Repayment Payment Method ID</label>
-                        <input type = "text" name = "payment-method-id" required = "required" th:field = "*{paymentMethod}" class = "form-control" placeholder = "Payment Method">
+                        <label>Payment Method Name</label>
+                        <input type = "text" name = "paymentMethod-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{paymentMethodName}" class = "form-control" placeholder = "Method name">
                     </div>
 
                     <div class = "box-footer">

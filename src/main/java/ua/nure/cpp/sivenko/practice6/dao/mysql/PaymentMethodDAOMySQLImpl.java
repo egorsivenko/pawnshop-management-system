@@ -1,5 +1,6 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.PaymentMethodDAO;
 import ua.nure.cpp.sivenko.practice6.model.PaymentMethod;
 import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
@@ -8,9 +9,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
     private static final String GET_BY_ID = "SELECT * FROM payment_methods WHERE payment_method_id = ?";
-    private static final String GET_ALL = "SELECT * FROM payment_methods";
+    private static final String GET_ALL = "SELECT * FROM payment_methods ORDER BY payment_method_id";
 
     private static final String INSERT = "INSERT INTO payment_methods(payment_method_name) VALUES (?)";
     private static final String UPDATE = "UPDATE payment_methods " +
@@ -19,9 +21,6 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
 
     @Override
     public PaymentMethod getPaymentMethodById(long paymentMethodId) {
-        if (paymentMethodId < 1) {
-            throw new IllegalArgumentException("PaymentMethod id cannot be <= 0");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, paymentMethodId);
@@ -54,19 +53,19 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
     }
 
     @Override
-    public void addPaymentMethod(String paymentMethodName) {
+    public void addPaymentMethod(String paymentMethodName) throws SQLException {
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, paymentMethodName);
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
     @Override
-    public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) {
+    public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) throws SQLException {
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, paymentMethodName);
@@ -74,15 +73,12 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
     @Override
     public void deletePaymentMethod(long paymentMethodId) {
-        if (paymentMethodId < 1) {
-            throw new IllegalArgumentException("PaymentMethod id cannot be <= 0");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, paymentMethodId);

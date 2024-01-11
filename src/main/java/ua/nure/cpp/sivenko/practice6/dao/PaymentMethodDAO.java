@@ -2,6 +2,7 @@ package ua.nure.cpp.sivenko.practice6.dao;
 
 import ua.nure.cpp.sivenko.practice6.model.PaymentMethod;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface PaymentMethodDAO {
@@ -9,9 +10,9 @@ public interface PaymentMethodDAO {
 
     List<PaymentMethod> getAllPaymentMethods();
 
-    void addPaymentMethod(String paymentMethodName);
+    void addPaymentMethod(String paymentMethodName) throws SQLException;
 
-    void updatePaymentMethodName(long paymentMethodId, String paymentMethodName);
+    void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) throws SQLException;
 
     void deletePaymentMethod(long paymentMethodId);
 }
