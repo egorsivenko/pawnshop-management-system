@@ -37,36 +37,30 @@
     </nav>
 
     <div class="container">
-        <h1>Customers List</h1>
+        <h1>Item Categories List</h1>
 
         <div class="col-lg-6">
-            <a th:href = "@{customers/add}" class = "btn btn-outline-primary mb-3">Add Customer</a>
+            <a th:href = "@{itemCategories/add}" class = "btn btn-outline-primary mb-3">Add Item Category</a>
         </div>
 
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact Number</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
             </thead>
 
             <tbody>
-                <tr th:each="customer : ${customers}">
-                    <td th:text="${customer.customerId}"></td>
-                    <td th:text="${customer.firstName}"></td>
-                    <td th:text="${customer.lastName}"></td>
-                    <td th:text="${customer.contactNumber}"></td>
-                    <td th:text="${customer.email}"></td>
-                    <td>
-                        <a th:href = "@{/customers/edit/{customerId}(customerId=${customer.customerId})}" class = "btn btn-info">Update</a>
-                        <a th:href = "@{/customers/{customerId}(customerId=${customer.customerId})}" class = "btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+            <tr th:each="itemCategory : ${itemCategories}">
+                <td th:text="${itemCategory.itemCategoryId}"></td>
+                <td th:text="${itemCategory.itemCategoryName}"></td>
+                <td>
+                    <a th:href = "@{/itemCategories/edit/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}" class = "btn btn-info">Update</a>
+                    <a th:href = "@{/itemCategories/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}" class = "btn btn-danger">Delete</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

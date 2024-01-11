@@ -1,5 +1,6 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.ItemCategoryDAO;
 import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
 import ua.nure.cpp.sivenko.practice6.model.Pawnbroker;
@@ -9,9 +10,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
     private static final String GET_BY_ID = "SELECT * FROM item_categories WHERE item_category_id = ?";
-    private static final String GET_ALL = "SELECT * FROM item_categories";
+    private static final String GET_ALL = "SELECT * FROM item_categories ORDER BY item_category_id";
 
     private static final String INSERT = "INSERT INTO item_categories(item_category_name) VALUES (?)";
     private static final String UPDATE = "UPDATE item_categories " +
@@ -25,9 +27,6 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
 
     @Override
     public ItemCategory getItemCategoryById(long itemCategoryId) {
-        if (itemCategoryId < 1) {
-            throw new IllegalArgumentException("ItemCategory id cannot be <= 0");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
@@ -74,7 +73,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
     }
 
     @Override
-    public void addItemCategory(ItemCategory itemCategory) {
+    public void addItemCategory(ItemCategory itemCategory) throws SQLException {
         try (Connection connection = ConnectionFactory.createMySQLConnection()) {
             connection.setAutoCommit(false);
 
@@ -85,7 +84,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
                 ps.executeUpdate();
 
                 try (ResultSet keys = ps.getGeneratedKeys()) {
-                    if (keys.next()) {
+                    if (keys.next() && itemCategory.getActivePawnbrokers() != null) {
                         for (Pawnbroker pawnbroker : itemCategory.getActivePawnbrokers()) {
                             long pawnbrokerId = pawnbroker.getPawnbrokerId();
                             ps_pawn_spec.setLong(1, pawnbrokerId);
@@ -103,12 +102,12 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
                 connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
     @Override
-    public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) {
+    public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) throws SQLException {
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, itemCategoryName);
@@ -116,33 +115,17 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
     @Override
     public void deleteItemCategory(long itemCategoryId) {
-        if (itemCategoryId < 1) {
-            throw new IllegalArgumentException("ItemCategory id cannot be <= 0");
-        }
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
-            connection.setAutoCommit(false);
+        try (Connection connection = ConnectionFactory.createMySQLConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE)) {
+            ps.setLong(1, itemCategoryId);
 
-            try (PreparedStatement ps = connection.prepareStatement(DELETE);
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(DELETE_PAWNBROKER_SPECIALIZATION)) {
-                ps_pawn_spec.setLong(1, itemCategoryId);
-                ps_pawn_spec.executeUpdate();
-
-                ps.setLong(1, itemCategoryId);
-                ps.executeUpdate();
-
-                connection.commit();
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
-            } finally {
-                connection.setAutoCommit(true);
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
