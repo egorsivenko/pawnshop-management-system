@@ -36,27 +36,22 @@
 
     <div class = "container">
         <div class = "col-lg-6 container justify-content-center card">
-            <h2 class = "text-center">Add New Customer</h2>
+            <h2 class = "text-center">Add New Item</h2>
             <div class = "card-body">
-                <form th:action = "@{/customers}" th:object = "${customer}" method = "POST">
+                <form th:action = "@{/items}" th:object = "${item}" method = "POST">
                     <div class = "form-group">
-                        <label>Customer First Name</label>
-                        <input type = "text" name = "first-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{firstName}" class = "form-control" placeholder = "First name">
+                        <label>Item Name</label>
+                        <input type = "text" name = "item-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{itemName}" class = "form-control" placeholder = "Name">
                     </div>
 
                     <div class = "form-group">
-                        <label>Customer Last Name</label>
-                        <input type = "text" name = "last-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{lastName}" class = "form-control" placeholder = "Last name">
+                        <label>Item Category ID</label>
+                        <input type = "text" name = "item-category" required = "required" th:field = "*{itemCategory}" class = "form-control" placeholder = "Category ID">
                     </div>
 
                     <div class = "form-group">
-                        <label>Customer Contact Number</label>
-                        <input type = "text" name = "contact-number" required = "required" pattern = "^[0-9]{3}-[0-9]{3}-[0-9]{4}$" th:field = "*{contactNumber}" class = "form-control" placeholder = "Contact number">
-                    </div>
-
-                    <div class = "form-group">
-                        <label>Customer Email</label>
-                        <input type = "text" name = "email" required = "required" pattern = "^[a-zA-Z0-9._]+@[a-z]+\.[a-z]{2,4}$" th:field = "*{email}" class = "form-control" placeholder = "Email">
+                        <label>Item Appraised Value</label>
+                        <input type = "number" min = "0" step=".01" name = "appraised-value" required = "required" th:field = "*{appraisedValue}" class = "form-control" placeholder = "Appraised Value">
                     </div>
 
                     <div class = "box-footer">

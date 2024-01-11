@@ -1,5 +1,6 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.ItemDAO;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.Item.ItemStatus;
@@ -10,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ItemDAOMySQLImpl implements ItemDAO {
     private static final String GET_BY_ID = "SELECT * FROM items WHERE item_id = ?";
     private static final String GET_BY_CATEGORY = "SELECT * FROM items WHERE item_category = ?";
@@ -24,9 +26,6 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public Item getItemById(long itemId) {
-        if (itemId < 1) {
-            throw new IllegalArgumentException("Item id cannot be <= 0");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, itemId);
@@ -97,7 +96,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
     }
 
     @Override
-    public void addItem(Item item) {
+    public void addItem(Item item) throws SQLException {
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, item.getItemName());
@@ -106,7 +105,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
@@ -125,9 +124,6 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void deleteItem(long itemId) {
-        if (itemId < 1) {
-            throw new IllegalArgumentException("Item id cannot be <= 0");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, itemId);
