@@ -57,8 +57,8 @@ public class PawnbrokerDAOCollectionImpl implements PawnbrokerDAO {
     }
 
     @Override
-    public void updatePawnbroker(Pawnbroker pawnbroker) {
-        pawnbrokers.set((int) pawnbroker.getPawnbrokerId() - 1, pawnbroker);
+    public void updatePawnbroker(long pawnbrokerId, Pawnbroker pawnbroker) {
+        pawnbrokers.set((int) pawnbrokerId - 1, pawnbroker);
     }
 
     @Override

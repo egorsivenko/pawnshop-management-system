@@ -1,5 +1,6 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.PawnbrokerDAO;
 import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
 import ua.nure.cpp.sivenko.practice6.model.Pawnbroker;
@@ -9,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
     private static final String GET_BY_ID = "SELECT * FROM pawnbrokers WHERE pawnbroker_id = ?";
     private static final String GET_BY_CONTACT_NUMBER = "SELECT * FROM pawnbrokers WHERE contact_number = ?";
@@ -28,9 +30,6 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerById(long pawnbrokerId) {
-        if (pawnbrokerId < 1) {
-            throw new IllegalArgumentException("Pawnbroker id cannot be <= 0");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
@@ -52,10 +51,6 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerByContactNumber(String contactNumber) {
-        String contactNumberRegex = "[0-9]{3}-[0-9]{3}-[0-9]{4}";
-        if (!contactNumber.matches(contactNumberRegex)) {
-            throw new IllegalArgumentException("Invalid contact number");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
@@ -77,10 +72,6 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerByEmail(String email) {
-        String emailRegex = "^[^@]+@[^@]+\\.[^@]{2,}$";
-        if (!email.matches(emailRegex)) {
-            throw new IllegalArgumentException("Invalid email");
-        }
         try (Connection connection = ConnectionFactory.createMySQLConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
@@ -143,7 +134,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
                 ps.executeUpdate();
 
                 try (ResultSet keys = ps.getGeneratedKeys()) {
-                    if (keys.next()) {
+                    if (keys.next() && pawnbroker.getSpecializations() != null) {
                         for (ItemCategory itemCategory : pawnbroker.getSpecializations()) {
                             long itemCategoryId = itemCategory.getItemCategoryId();
                             ps_pawn_spec.setLong(1, keys.getLong(1)); // pawnbrokerId
@@ -166,7 +157,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
     }
 
     @Override
-    public void updatePawnbroker(Pawnbroker pawnbroker) {
+    public void updatePawnbroker(long pawnbrokerId, Pawnbroker pawnbroker) {
         try (Connection connection = ConnectionFactory.createMySQLConnection()) {
             connection.setAutoCommit(false);
 
@@ -179,19 +170,21 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
                 ps.setString(4, pawnbroker.getContactNumber());
                 ps.setString(5, pawnbroker.getEmail());
                 ps.setString(6, pawnbroker.getAddress());
-                ps.setLong(7, pawnbroker.getPawnbrokerId());
+                ps.setLong(7, pawnbrokerId);
 
                 ps.executeUpdate();
 
                 ps_pawn_spec_delete.setLong(1, pawnbroker.getPawnbrokerId());
                 ps_pawn_spec_delete.executeUpdate();
 
-                for (ItemCategory itemCategory : pawnbroker.getSpecializations()) {
-                    long itemCategoryId = itemCategory.getItemCategoryId();
-                    ps_pawn_spec_insert.setLong(1, pawnbroker.getPawnbrokerId()); // pawnbrokerId
-                    ps_pawn_spec_insert.setLong(2, itemCategoryId);
+                if (pawnbroker.getSpecializations() != null) {
+                    for (ItemCategory itemCategory : pawnbroker.getSpecializations()) {
+                        long itemCategoryId = itemCategory.getItemCategoryId();
+                        ps_pawn_spec_insert.setLong(1, pawnbroker.getPawnbrokerId()); // pawnbrokerId
+                        ps_pawn_spec_insert.setLong(2, itemCategoryId);
 
-                    ps_pawn_spec_insert.executeUpdate();
+                        ps_pawn_spec_insert.executeUpdate();
+                    }
                 }
                 connection.commit();
             } catch (SQLException e) {
@@ -207,27 +200,11 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public void deletePawnbroker(long pawnbrokerId) {
-        if (pawnbrokerId < 1) {
-            throw new IllegalArgumentException("Pawnbroker id cannot be <= 0");
-        }
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
-            connection.setAutoCommit(false);
+        try (Connection connection = ConnectionFactory.createMySQLConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE)) {
+            ps.setLong(1, pawnbrokerId);
 
-            try (PreparedStatement ps = connection.prepareStatement(DELETE);
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(DELETE_PAWNBROKER_SPECIALIZATION)) {
-                ps_pawn_spec.setLong(1, pawnbrokerId);
-                ps_pawn_spec.executeUpdate();
-
-                ps.setLong(1, pawnbrokerId);
-                ps.executeUpdate();
-
-                connection.commit();
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
-            } finally {
-                connection.setAutoCommit(true);
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

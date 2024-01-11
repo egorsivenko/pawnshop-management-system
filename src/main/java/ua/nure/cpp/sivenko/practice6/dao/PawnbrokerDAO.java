@@ -15,7 +15,7 @@ public interface PawnbrokerDAO {
 
     void addPawnbroker(Pawnbroker pawnbroker);
 
-    void updatePawnbroker(Pawnbroker pawnbroker);
+    void updatePawnbroker(long pawnbrokerId, Pawnbroker pawnbroker);
 
     void deletePawnbroker(long pawnbrokerId);
 }
