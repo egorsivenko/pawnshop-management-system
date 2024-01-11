@@ -38,36 +38,33 @@
             </ul>
         </div>
     </nav>
-    <br>
 
-    <div class = "container">
-        <div class = "col-lg-6 container justify-content-center card">
-            <h2 class = "text-center">Add New Item</h2>
-            <div class = "card-body">
-                <form th:action = "@{/items}" th:object = "${item}" method = "POST">
-                    <div class = "form-group">
-                        <label>Item Name</label>
-                        <input type = "text" name = "item-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{itemName}" class = "form-control" placeholder = "Name">
-                    </div>
+    <div class="container">
+        <h1>Repayments List</h1>
 
-                    <div class = "form-group">
-                        <label>Item Category ID</label>
-                        <input type = "text" name = "item-category" required = "required" th:field = "*{itemCategory}" class = "form-control" placeholder = "Category ID">
-                    </div>
-
-                    <div class = "form-group">
-                        <label>Item Appraised Value</label>
-                        <input type = "number" min = "0" step=".01" name = "appraised-value" required = "required" th:field = "*{appraisedValue}" class = "form-control" placeholder = "Appraised Value">
-                    </div>
-
-                    <div class = "box-footer">
-                        <button type = "submit" class = "btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div class="col-lg-6">
+            <a th:href = "@{repayments/add}" class = "btn btn-outline-primary mb-3">Add Repayment</a>
         </div>
+
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Transaction ID</th>
+                <th>Payment Method ID</th>
+                <th>Repayment Date</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="repayment : ${repayments}">
+                <td th:text="${repayment.repaymentId}"></td>
+                <td th:text="${repayment.transactionId}"></td>
+                <td th:text="${repayment.paymentMethod}"></td>
+                <td th:text="${repayment.repaymentDate}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package ua.nure.cpp.sivenko.practice6.dao;
 
 import ua.nure.cpp.sivenko.practice6.model.Repayment;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface RepaymentDAO {
@@ -13,5 +14,5 @@ public interface RepaymentDAO {
 
     List<Repayment> getAllRepayments();
 
-    void addRepayment(Repayment repayment);
+    void addRepayment(Repayment repayment) throws SQLException;
 }

@@ -42,22 +42,17 @@
 
     <div class = "container">
         <div class = "col-lg-6 container justify-content-center card">
-            <h2 class = "text-center">Add New Item</h2>
+            <h2 class = "text-center">Add New Repayment</h2>
             <div class = "card-body">
-                <form th:action = "@{/items}" th:object = "${item}" method = "POST">
+                <form th:action = "@{/repayments}" th:object = "${repayment}" method = "POST">
                     <div class = "form-group">
-                        <label>Item Name</label>
-                        <input type = "text" name = "item-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{itemName}" class = "form-control" placeholder = "Name">
+                        <label>Repayment Transaction ID</label>
+                        <input type = "text" name = "transaction-id" required = "required" th:field = "*{transactionId}" class = "form-control" placeholder = "Transaction ID">
                     </div>
 
                     <div class = "form-group">
-                        <label>Item Category ID</label>
-                        <input type = "text" name = "item-category" required = "required" th:field = "*{itemCategory}" class = "form-control" placeholder = "Category ID">
-                    </div>
-
-                    <div class = "form-group">
-                        <label>Item Appraised Value</label>
-                        <input type = "number" min = "0" step=".01" name = "appraised-value" required = "required" th:field = "*{appraisedValue}" class = "form-control" placeholder = "Appraised Value">
+                        <label>Repayment Payment Method ID</label>
+                        <input type = "text" name = "payment-method-id" required = "required" th:field = "*{paymentMethod}" class = "form-control" placeholder = "Payment Method">
                     </div>
 
                     <div class = "box-footer">
