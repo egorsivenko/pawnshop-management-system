@@ -22,9 +22,9 @@ public class PawnTransactionDAOCollectionImpl implements PawnTransactionDAO {
     }
 
     @Override
-    public PawnTransaction getPawnTransactionById(long transactionId) {
+    public PawnTransaction getPawnTransactionById(long pawnTransactionId) {
         return pawnTransactions.stream()
-                .filter(pawnTransaction -> pawnTransaction.getTransactionId() == transactionId)
+                .filter(pawnTransaction -> pawnTransaction.getTransactionId() == pawnTransactionId)
                 .findFirst()
                 .orElse(null);
     }
@@ -52,10 +52,5 @@ public class PawnTransactionDAOCollectionImpl implements PawnTransactionDAO {
     public void addPawnTransaction(PawnTransaction pawnTransaction) {
         pawnTransaction.setTransactionId(id.getAndIncrement());
         pawnTransactions.add(pawnTransaction);
-    }
-
-    @Override
-    public void deletePawnTransaction(long transactionId) {
-        pawnTransactions.remove((int) transactionId - 1);
     }
 }

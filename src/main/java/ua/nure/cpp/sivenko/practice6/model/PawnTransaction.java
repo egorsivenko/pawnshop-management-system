@@ -1,17 +1,23 @@
 package ua.nure.cpp.sivenko.practice6.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class PawnTransaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long transactionId;
+
     private long customerId;
     private long itemId;
     private long pawnbrokerId;

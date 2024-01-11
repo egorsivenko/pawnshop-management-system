@@ -46,36 +46,43 @@
     </nav>
 
     <div class="container">
-        <h1>Customers List</h1>
+        <h1>Pawn Transactions List</h1>
 
         <div class="col-lg-6">
-            <a th:href = "@{customers/add}" class = "btn btn-outline-primary mb-3">Add Customer</a>
+            <a th:href = "@{pawnTransactions/add}" class = "btn btn-outline-primary mb-3">Add Pawn Transaction</a>
         </div>
 
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact Number</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Customer ID</th>
+                <th>Item ID</th>
+                <th>Pawnbroker ID</th>
+                <th>Pawn Amount</th>
+                <th>Interest Rate</th>
+                <th>Monthly Period</th>
+                <th>Repayment Amount</th>
+                <th>Pawn Date</th>
+                <th>Expiration Date</th>
+                <th>Transaction Status</th>
+            </tr>
             </thead>
 
             <tbody>
-                <tr th:each="customer : ${customers}">
-                    <td th:text="${customer.customerId}"></td>
-                    <td th:text="${customer.firstName}"></td>
-                    <td th:text="${customer.lastName}"></td>
-                    <td th:text="${customer.contactNumber}"></td>
-                    <td th:text="${customer.email}"></td>
-                    <td>
-                        <a th:href = "@{/customers/edit/{customerId}(customerId=${customer.customerId})}" class = "btn btn-info">Update</a>
-                        <a th:href = "@{/customers/{customerId}(customerId=${customer.customerId})}" class = "btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+            <tr th:each="pawnTransaction : ${pawnTransactions}">
+                <td th:text="${pawnTransaction.transactionId}"></td>
+                <td th:text="${pawnTransaction.customerId}"></td>
+                <td th:text="${pawnTransaction.itemId}"></td>
+                <td th:text="${pawnTransaction.pawnbrokerId}"></td>
+                <td th:text="${pawnTransaction.pawnAmount}"></td>
+                <td th:text="${pawnTransaction.interestRate}"></td>
+                <td th:text="${pawnTransaction.monthlyPeriod}"></td>
+                <td th:text="${pawnTransaction.repaymentAmount}"></td>
+                <td th:text="${pawnTransaction.pawnDate}"></td>
+                <td th:text="${pawnTransaction.expirationDate}"></td>
+                <td th:text="${pawnTransaction.transactionStatus}"></td>
+            </tr>
             </tbody>
         </table>
     </div>

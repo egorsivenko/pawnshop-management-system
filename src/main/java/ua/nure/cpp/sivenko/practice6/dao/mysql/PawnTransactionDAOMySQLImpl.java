@@ -1,5 +1,6 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.PawnTransactionDAO;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction.TransactionStatus;
@@ -9,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     private static final String GET_BY_ID = "SELECT * FROM pawn_transactions WHERE transaction_id = ?";
     private static final String GET_BY_CUSTOMER_ID = "SELECT * FROM pawn_transactions WHERE customer_id = ?";
@@ -21,13 +23,10 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     private static final String DELETE = "DELETE FROM pawn_transactions WHERE transaction_id = ?";
 
     @Override
-    public PawnTransaction getPawnTransactionById(long transactionId) {
-        if (transactionId < 1) {
-            throw new IllegalArgumentException("PawnTransaction id cannot be <= 0");
-        }
+    public PawnTransaction getPawnTransactionById(long pawnTransactionId) {
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
-            ps.setLong(1, transactionId);
+            ps.setLong(1, pawnTransactionId);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
@@ -98,7 +97,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     }
 
     @Override
-    public void addPawnTransaction(PawnTransaction pawnTransaction) {
+    public void addPawnTransaction(PawnTransaction pawnTransaction) throws SQLException {
         try (Connection connection = ConnectionFactory.createMySQLConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setLong(1, pawnTransaction.getCustomerId());
@@ -110,22 +109,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void deletePawnTransaction(long transactionId) {
-        if (transactionId < 1) {
-            throw new IllegalArgumentException("PawnTransaction id cannot be <= 0");
-        }
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
-             PreparedStatement ps = connection.prepareStatement(DELETE)) {
-            ps.setLong(1, transactionId);
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 

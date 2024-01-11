@@ -48,37 +48,37 @@
 
     <div class = "container">
         <div class = "col-lg-6 container justify-content-center card">
-            <h2 class = "text-center">Add New Pawnbroker</h2>
+            <h2 class = "text-center">Add New Pawn Transaction</h2>
             <div class = "card-body">
-                <form th:action = "@{/pawnbrokers}" th:object = "${pawnbroker}" method = "POST">
+                <form th:action = "@{/pawnTransactions}" th:object = "${pawnTransaction}" method = "POST">
                     <div class = "form-group">
-                        <label>Pawnbroker First Name</label>
-                        <input type = "text" name = "first-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{firstName}" class = "form-control" placeholder = "First name">
+                        <label>Customer ID</label>
+                        <input type = "text" name = "customer-id" required = "required" th:field = "*{customerId}" class = "form-control" placeholder = "Customer ID">
                     </div>
 
                     <div class = "form-group">
-                        <label>Pawnbroker Last Name</label>
-                        <input type = "text" name = "last-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{lastName}" class = "form-control" placeholder = "Last name">
+                        <label>Item ID</label>
+                        <input type = "text" name = "item-id" required = "required" th:field = "*{itemId}" class = "form-control" placeholder = "Item ID">
                     </div>
 
                     <div class = "form-group">
-                        <label>Pawnbroker Birthdate</label>
-                        <input type = "text" name = "birthdate" required = "required" pattern = "^\d{4}-\d{2}-\d{2}$" th:field = "*{birthdate}" class = "form-control" placeholder = "Birthdate">
+                        <label>Pawnbroker ID</label>
+                        <input type = "text" name = "pawnbroker-id" required = "required" th:field = "*{pawnbrokerId}" class = "form-control" placeholder = "Pawnbroker ID">
                     </div>
 
                     <div class = "form-group">
-                        <label>Pawnbroker Contact Number</label>
-                        <input type = "text" name = "contact-number" required = "required" pattern = "^[0-9]{3}-[0-9]{3}-[0-9]{4}$" th:field = "*{contactNumber}" class = "form-control" placeholder = "Contact number">
+                        <label>Pawn Amount</label>
+                        <input type = "number" min = "0" step=".01" name = "pawnAmount" required = "required" th:field = "*{pawnAmount}" class = "form-control" placeholder = "Pawn Amount">
                     </div>
 
                     <div class = "form-group">
-                        <label>Pawnbroker Email</label>
-                        <input type = "text" name = "email" required = "required" pattern = "^[a-zA-Z0-9._]+@[a-z]+\.[a-z]{2,4}$" th:field = "*{email}" class = "form-control" placeholder = "Email">
+                        <label>Interest Rate</label>
+                        <input type = "number" min = "10" max = "100" name = "interestRate" required = "required" th:field = "*{interestRate}" class = "form-control" placeholder = "Interest Rate">
                     </div>
 
                     <div class = "form-group">
-                        <label>Pawnbroker Address</label>
-                        <input type = "text" name = "address" required = "required" th:field = "*{address}" class = "form-control" placeholder = "Address">
+                        <label>Monthly Period</label>
+                        <input type = "number" min = "1" max = "10" name = "monthlyPeriod" required = "required" th:field = "*{monthlyPeriod}" class = "form-control" placeholder = "Monthly Period">
                     </div>
 
                     <div class = "box-footer">
