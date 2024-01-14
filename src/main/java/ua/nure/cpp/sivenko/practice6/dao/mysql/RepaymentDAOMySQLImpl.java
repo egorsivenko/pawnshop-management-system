@@ -99,8 +99,6 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
             ps.setLong(2, repayment.getPaymentMethod());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
         }
     }
 

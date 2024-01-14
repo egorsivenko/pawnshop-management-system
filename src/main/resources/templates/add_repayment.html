@@ -57,8 +57,10 @@
                     </div>
 
                     <div class = "form-group">
-                        <label>Repayment Payment Method ID</label>
-                        <input type = "text" name = "payment-method-id" required = "required" th:field = "*{paymentMethod}" class = "form-control" placeholder = "Payment Method">
+                        <label>Repayment Payment Method</label>
+                        <select name = "payment-method" required = "required" th:field = "*{paymentMethod}" class = "form-control">
+                            <option th:each = "paymentMethod : ${paymentMethods}" th:value = "${paymentMethod.paymentMethodId}" th:text = "${paymentMethod.paymentMethodName}"></option>
+                        </select>
                     </div>
 
                     <div class = "box-footer">
