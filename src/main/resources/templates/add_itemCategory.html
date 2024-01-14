@@ -53,7 +53,7 @@
                 <form th:action = "@{/itemCategories}" th:object = "${itemCategory}" method = "POST">
                     <div class = "form-group">
                         <label>Item Category Name</label>
-                        <input type = "text" name = "itemCategory-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{itemCategoryName}" class = "form-control" placeholder = "Category name">
+                        <input type = "text" name = "itemCategory-name" required = "required" pattern = "[A-Z a-z]{2,50}" th:field = "*{itemCategoryName}" class = "form-control" placeholder = "Category name">
                     </div>
 
                     <div class = "box-footer">

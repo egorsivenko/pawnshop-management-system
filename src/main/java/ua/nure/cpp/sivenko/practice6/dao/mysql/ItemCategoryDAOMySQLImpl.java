@@ -104,8 +104,6 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
             } finally {
                 connection.setAutoCommit(true);
             }
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
@@ -117,8 +115,6 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
             ps.setLong(2, itemCategoryId);
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
