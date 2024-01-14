@@ -53,7 +53,7 @@
                 <form th:action = "@{/paymentMethods/{paymentMethodId}(paymentMethodId=${paymentMethod.paymentMethodId})}" th:object = "${paymentMethod}" method = "POST">
                     <div class = "form-group">
                         <label>Payment Method Name</label>
-                        <input type = "text" name = "paymentMethod-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{paymentMethodName}" class = "form-control" placeholder = "Method name">
+                        <input type = "text" name = "paymentMethod-name" required = "required" pattern = "[A-Z a-z]{2,50}" th:field = "*{paymentMethodName}" class = "form-control" placeholder = "Method name">
                     </div>
 
                     <div class = "box-footer">

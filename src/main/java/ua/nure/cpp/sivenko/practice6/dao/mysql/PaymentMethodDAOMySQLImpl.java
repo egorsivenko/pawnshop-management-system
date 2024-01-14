@@ -63,8 +63,6 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
             ps.setString(1, paymentMethodName);
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
@@ -76,8 +74,6 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
             ps.setLong(2, paymentMethodId);
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
