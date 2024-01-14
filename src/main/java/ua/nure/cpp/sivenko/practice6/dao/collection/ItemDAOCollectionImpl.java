@@ -57,8 +57,8 @@ public class ItemDAOCollectionImpl implements ItemDAO {
     }
 
     @Override
-    public void updateItemAppraisedValue(long itemId, BigDecimal appraisedValue) {
-        items.get((int) itemId - 1).setAppraisedValue(appraisedValue);
+    public void updateItem(long itemId, Item item) {
+        items.set((int) itemId - 1, item);
     }
 
     @Override

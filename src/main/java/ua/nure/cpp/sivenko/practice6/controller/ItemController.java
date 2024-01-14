@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ua.nure.cpp.sivenko.practice6.model.Customer;
 import ua.nure.cpp.sivenko.practice6.model.Item;
+import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
+import ua.nure.cpp.sivenko.practice6.service.ItemCategoryService;
 import ua.nure.cpp.sivenko.practice6.service.ItemService;
 
 import java.sql.SQLException;
@@ -23,6 +24,9 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ItemCategoryService itemCategoryService;
+
     @GetMapping("/items")
     public String getAllItems(Model model) {
         List<Item> items = itemService.getAllItems();
@@ -34,6 +38,9 @@ public class ItemController {
     public String addItemForm(Model model) {
         Item item = new Item();
         model.addAttribute("item", item);
+
+        List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
+        model.addAttribute("itemCategories", itemCategories);
         return "add_item";
     }
 
@@ -47,14 +54,17 @@ public class ItemController {
     public String updateItemForm(@PathVariable Long itemId, Model model) {
         Item item = itemService.getItemById(itemId);
         model.addAttribute("item", item);
+
+        List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
+        model.addAttribute("itemCategories", itemCategories);
         return "update_item";
     }
 
     @PostMapping("/items/{itemId}")
-    public String updateItemAppraisedValue(@PathVariable Long itemId, @ModelAttribute("item") Item item, Model model) {
+    public String updateItem(@PathVariable Long itemId, @ModelAttribute("item") Item item, Model model) {
         Item itemById = itemService.getItemById(itemId);
         if (!Objects.equals(itemById, item)) {
-            itemService.updateItemAppraisedValue(itemId, item.getAppraisedValue());
+            itemService.updateItem(itemId, item);
         }
         return "redirect:/items";
     }

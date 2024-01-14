@@ -3,7 +3,6 @@ package ua.nure.cpp.sivenko.practice6.dao;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.Item.ItemStatus;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,9 +15,9 @@ public interface ItemDAO {
 
     List<Item> getAllItems();
 
-    void addItem(Item item) throws SQLException;
+    void addItem(Item item);
 
-    void updateItemAppraisedValue(long itemId, BigDecimal appraisedValue);
+    void updateItem(long itemId, Item item);
 
     void deleteItem(long itemId);
 }

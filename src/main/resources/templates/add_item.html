@@ -53,17 +53,19 @@
                 <form th:action = "@{/items}" th:object = "${item}" method = "POST">
                     <div class = "form-group">
                         <label>Item Name</label>
-                        <input type = "text" name = "item-name" required = "required" pattern = "[A-Za-z]{2,50}" th:field = "*{itemName}" class = "form-control" placeholder = "Name">
+                        <input type = "text" maxlength = "50" name = "item-name" required = "required" th:field = "*{itemName}" class = "form-control" placeholder = "Name">
                     </div>
 
                     <div class = "form-group">
-                        <label>Item Category ID</label>
-                        <input type = "text" name = "item-category" required = "required" th:field = "*{itemCategory}" class = "form-control" placeholder = "Category ID">
+                        <label>Item Category</label>
+                        <select name = "item-category" required = "required" th:field = "*{itemCategory}" class = "form-control">
+                            <option th:each = "category : ${itemCategories}" th:value = "${category.itemCategoryId}" th:text = "${category.itemCategoryName}"></option>
+                        </select>
                     </div>
 
                     <div class = "form-group">
                         <label>Item Appraised Value</label>
-                        <input type = "number" min = "0" step=".01" name = "appraised-value" required = "required" th:field = "*{appraisedValue}" class = "form-control" placeholder = "Appraised Value">
+                        <input type = "number" min = "1" step=".01" name = "appraised-value" required = "required" th:field = "*{appraisedValue}" class = "form-control" placeholder = "Appraised Value">
                     </div>
 
                     <div class = "box-footer">

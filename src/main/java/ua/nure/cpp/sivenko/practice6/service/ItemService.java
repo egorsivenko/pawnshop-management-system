@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ua.nure.cpp.sivenko.practice6.dao.ItemDAO;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,11 +25,7 @@ public class ItemService {
     }
 
     public void addItem(Item item) {
-        try {
-            itemDAO.addItem(item);
-        } catch (SQLException e) {
-            log.warning(e.getMessage());
-        }
+        itemDAO.addItem(item);
     }
 
     public void deleteItem(long itemId) throws SQLException {
@@ -41,7 +36,7 @@ public class ItemService {
         itemDAO.deleteItem(itemId);
     }
 
-    public void updateItemAppraisedValue(long itemId, BigDecimal appraisedValue) {
-        itemDAO.updateItemAppraisedValue(itemId, appraisedValue);
+    public void updateItem(long itemId, Item item) {
+        itemDAO.updateItem(itemId, item);
     }
 }

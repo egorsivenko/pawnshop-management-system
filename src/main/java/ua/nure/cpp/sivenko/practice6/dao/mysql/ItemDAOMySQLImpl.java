@@ -7,7 +7,6 @@ import ua.nure.cpp.sivenko.practice6.dao.ItemDAO;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.Item.ItemStatus;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,8 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     private static final String INSERT = "INSERT INTO items (item_name, item_category, appraised_value) " +
             "VALUES (?, ?, ?)";
-    private static final String UPDATE_APPRAISED_VALUE = "UPDATE items " +
-            "SET appraised_value = ? WHERE item_id = ?";
+    private static final String UPDATE = "UPDATE items " +
+            "SET item_name = ?, item_category = ?, appraised_value = ? WHERE item_id = ?";
     private static final String DELETE = "DELETE FROM items WHERE item_id = ?";
 
     @Autowired
@@ -100,7 +99,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
     }
 
     @Override
-    public void addItem(Item item) throws SQLException {
+    public void addItem(Item item) {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, item.getItemName());
@@ -109,16 +108,18 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw e;
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void updateItemAppraisedValue(long itemId, BigDecimal appraisedValue) {
+    public void updateItem(long itemId, Item item) {
         try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(UPDATE_APPRAISED_VALUE)) {
-            ps.setBigDecimal(1, appraisedValue);
-            ps.setLong(2, itemId);
+             PreparedStatement ps = connection.prepareStatement(UPDATE)) {
+            ps.setString(1, item.getItemName());
+            ps.setLong(2, item.getItemCategory());
+            ps.setBigDecimal(3, item.getAppraisedValue());
+            ps.setLong(4, itemId);
 
             ps.executeUpdate();
         } catch (SQLException e) {
