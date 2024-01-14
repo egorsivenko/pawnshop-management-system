@@ -1,9 +1,10 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.CustomerDAO;
 import ua.nure.cpp.sivenko.practice6.model.Customer;
-import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,9 +23,12 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
             "SET first_name = ?, last_name = ?, contact_number = ?, email = ? WHERE customer_id = ?";
     private static final String DELETE = "DELETE FROM customers WHERE customer_id = ?";
 
+    @Autowired
+    private DatabaseConfig databaseConfig;
+
     @Override
     public Customer getCustomerById(long customerId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, customerId);
 
@@ -41,7 +45,7 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
 
     @Override
     public Customer getCustomerByContactNumber(String contactNumber) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_CONTACT_NUMBER)) {
             ps.setString(1, contactNumber);
 
@@ -58,7 +62,7 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
 
     @Override
     public Customer getCustomerByEmail(String email) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_EMAIL)) {
             ps.setString(1, email);
 
@@ -77,7 +81,7 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -91,7 +95,7 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
 
     @Override
     public void addCustomer(Customer customer) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, customer.getFirstName());
             ps.setString(2, customer.getLastName());
@@ -106,7 +110,7 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
 
     @Override
     public void updateCustomer(long customerId, Customer customer) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, customer.getFirstName());
             ps.setString(2, customer.getLastName());
@@ -122,7 +126,7 @@ public class CustomerDAOMySQLImpl implements CustomerDAO {
 
     @Override
     public void deleteCustomer(long customerId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, customerId);
 

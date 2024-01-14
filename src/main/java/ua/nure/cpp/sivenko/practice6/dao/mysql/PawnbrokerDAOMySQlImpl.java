@@ -1,10 +1,11 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.PawnbrokerDAO;
 import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
 import ua.nure.cpp.sivenko.practice6.model.Pawnbroker;
-import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,9 +29,12 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
     private static final String INSERT_PAWNBROKER_SPECIALIZATION = "INSERT INTO pawnbroker_specialization VALUES (?, ?)";
     private static final String DELETE_PAWNBROKER_SPECIALIZATION = "DELETE FROM pawnbroker_specialization WHERE pawnbroker_id = ?";
 
+    @Autowired
+    private DatabaseConfig databaseConfig;
+
     @Override
     public Pawnbroker getPawnbrokerById(long pawnbrokerId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             try (PreparedStatement ps = connection.prepareStatement(GET_BY_ID);
@@ -51,7 +55,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerByContactNumber(String contactNumber) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             try (PreparedStatement ps = connection.prepareStatement(GET_BY_CONTACT_NUMBER);
@@ -72,7 +76,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerByEmail(String email) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             try (PreparedStatement ps = connection.prepareStatement(GET_BY_EMAIL);
@@ -95,7 +99,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
     public List<Pawnbroker> getAllPawnbrokers() {
         List<Pawnbroker> pawnbrokers = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             try (Statement st = connection.createStatement();
@@ -119,7 +123,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public void addPawnbroker(Pawnbroker pawnbroker) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement ps = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -158,7 +162,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public void updatePawnbroker(long pawnbrokerId, Pawnbroker pawnbroker) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement ps = connection.prepareStatement(UPDATE);
@@ -200,7 +204,7 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public void deletePawnbroker(long pawnbrokerId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, pawnbrokerId);
 

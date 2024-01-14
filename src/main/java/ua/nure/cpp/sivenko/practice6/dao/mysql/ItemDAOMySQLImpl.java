@@ -1,10 +1,11 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.ItemDAO;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.Item.ItemStatus;
-import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -24,9 +25,12 @@ public class ItemDAOMySQLImpl implements ItemDAO {
             "SET appraised_value = ? WHERE item_id = ?";
     private static final String DELETE = "DELETE FROM items WHERE item_id = ?";
 
+    @Autowired
+    private DatabaseConfig databaseConfig;
+
     @Override
     public Item getItemById(long itemId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, itemId);
 
@@ -45,7 +49,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
     public List<Item> getItemsByCategory(long itemCategoryId) {
         List<Item> items = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_CATEGORY)) {
             ps.setLong(1, itemCategoryId);
 
@@ -64,7 +68,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
     public List<Item> getItemsByStatus(ItemStatus itemStatus) {
         List<Item> items = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_STATUS)) {
             ps.setString(1, itemStatus.toString());
 
@@ -83,7 +87,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -97,7 +101,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void addItem(Item item) throws SQLException {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, item.getItemName());
             ps.setLong(2, item.getItemCategory());
@@ -111,7 +115,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void updateItemAppraisedValue(long itemId, BigDecimal appraisedValue) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_APPRAISED_VALUE)) {
             ps.setBigDecimal(1, appraisedValue);
             ps.setLong(2, itemId);
@@ -124,7 +128,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void deleteItem(long itemId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, itemId);
 

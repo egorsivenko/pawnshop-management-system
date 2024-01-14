@@ -1,10 +1,11 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.ItemCategoryDAO;
 import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
 import ua.nure.cpp.sivenko.practice6.model.Pawnbroker;
-import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,11 +24,13 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
     private static final String SELECT_PAWNBROKER_SPECIALIZATION = "SELECT * FROM pawnbroker_specialization ps " +
             "JOIN pawnbrokers p ON ps.pawnbroker_id = p.pawnbroker_id WHERE specialization = ?";
     private static final String INSERT_PAWNBROKER_SPECIALIZATION = "INSERT INTO pawnbroker_specialization VALUES (?, ?)";
-    private static final String DELETE_PAWNBROKER_SPECIALIZATION = "DELETE FROM pawnbroker_specialization WHERE specialization = ?";
+
+    @Autowired
+    private DatabaseConfig databaseConfig;
 
     @Override
     public ItemCategory getItemCategoryById(long itemCategoryId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             try (PreparedStatement ps = connection.prepareStatement(GET_BY_ID);
@@ -50,7 +53,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
     public List<ItemCategory> getAllItemCategories() {
         List<ItemCategory> itemCategories = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 
             try (Statement st = connection.createStatement();
@@ -74,7 +77,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
 
     @Override
     public void addItemCategory(ItemCategory itemCategory) throws SQLException {
-        try (Connection connection = ConnectionFactory.createMySQLConnection()) {
+        try (Connection connection = databaseConfig.createConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement ps = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -108,7 +111,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
 
     @Override
     public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) throws SQLException {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, itemCategoryName);
             ps.setLong(2, itemCategoryId);
@@ -121,7 +124,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
 
     @Override
     public void deleteItemCategory(long itemCategoryId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, itemCategoryId);
 

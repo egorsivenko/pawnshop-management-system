@@ -1,9 +1,10 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.RepaymentDAO;
 import ua.nure.cpp.sivenko.practice6.model.Repayment;
-import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,9 +19,12 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
 
     private static final String INSERT = "INSERT INTO repayments (transaction_id, payment_method) VALUES (?, ?)";
 
+    @Autowired
+    private DatabaseConfig databaseConfig;
+
     @Override
     public Repayment getRepaymentById(long repaymentId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, repaymentId);
 
@@ -37,7 +41,7 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
 
     @Override
     public Repayment getRepaymentByTransactionId(long transactionId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_TRANSACTION_ID)) {
             ps.setLong(1, transactionId);
 
@@ -56,7 +60,7 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
     public List<Repayment> getRepaymentsByPaymentMethod(long paymentMethodId) {
         List<Repayment> repayments = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_PAYMENT_METHOD)) {
             ps.setLong(1, paymentMethodId);
 
@@ -75,7 +79,7 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
     public List<Repayment> getAllRepayments() {
         List<Repayment> repayments = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -89,7 +93,7 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
 
     @Override
     public void addRepayment(Repayment repayment) throws SQLException {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setLong(1, repayment.getTransactionId());
             ps.setLong(2, repayment.getPaymentMethod());

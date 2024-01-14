@@ -1,10 +1,11 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.PawnTransactionDAO;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction.TransactionStatus;
-import ua.nure.cpp.sivenko.practice6.util.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     private static final String INSERT = "INSERT INTO pawn_transactions " +
             "(customer_id, item_id, pawnbroker_id, pawn_amount, interest_rate, monthly_period) " +
             "VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String DELETE = "DELETE FROM pawn_transactions WHERE transaction_id = ?";
+
+    @Autowired
+    private DatabaseConfig databaseConfig;
 
     @Override
     public PawnTransaction getPawnTransactionById(long pawnTransactionId) {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, pawnTransactionId);
 
@@ -46,7 +49,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
         if (customerId < 1) {
             throw new IllegalArgumentException("Customer id cannot be <= 0");
         }
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_CUSTOMER_ID)) {
             ps.setLong(1, customerId);
 
@@ -65,7 +68,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     public List<PawnTransaction> getPawnTransactionsByStatus(TransactionStatus transactionStatus) {
         List<PawnTransaction> pawnTransactions = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_STATUS)) {
             ps.setString(1, transactionStatus.toString());
 
@@ -84,7 +87,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     public List<PawnTransaction> getAllPawnTransactions() {
         List<PawnTransaction> pawnTransactions = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -98,7 +101,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
 
     @Override
     public void addPawnTransaction(PawnTransaction pawnTransaction) throws SQLException {
-        try (Connection connection = ConnectionFactory.createMySQLConnection();
+        try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setLong(1, pawnTransaction.getCustomerId());
             ps.setLong(2, pawnTransaction.getItemId());
