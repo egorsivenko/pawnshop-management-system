@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.service;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.nure.cpp.sivenko.practice6.dao.ItemDAO;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-@Log
 public class ItemService {
 
     @Autowired

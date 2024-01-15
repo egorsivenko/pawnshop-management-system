@@ -23,7 +23,7 @@ public class RepaymentController {
     private PaymentMethodService paymentMethodService;
 
     @GetMapping("/repayments")
-    public String getAllItems(Model model) {
+    public String getAllRepayments(Model model) {
         List<Repayment> repayments = repaymentService.getAllRepayments();
         model.addAttribute("repayments", repayments);
         return "repayments";
@@ -40,7 +40,7 @@ public class RepaymentController {
     }
 
     @PostMapping("/repayments")
-    public String addItem(@ModelAttribute("repayment") Repayment repayment) {
+    public String addRepayment(@ModelAttribute("repayment") Repayment repayment) {
         repaymentService.addRepayment(repayment);
         return "redirect:/repayments";
     }

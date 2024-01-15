@@ -32,7 +32,7 @@ public class PawnTransactionController {
     }
 
     @PostMapping("/pawnTransactions")
-    public String addItem(@ModelAttribute("pawnTransaction") PawnTransaction pawnTransaction) {
+    public String addPawnTransaction(@ModelAttribute("pawnTransaction") PawnTransaction pawnTransaction) {
         pawnTransactionService.addPawnTransaction(pawnTransaction);
         return "redirect:/pawnTransactions";
     }
