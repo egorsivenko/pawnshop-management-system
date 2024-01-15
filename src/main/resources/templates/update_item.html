@@ -8,74 +8,77 @@
           crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <!-- Brand -->
-        <a class="navbar-brand disabled" href="#">Pawnshop Management System</a>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand disabled" href="#">Pawnshop Management System</a>
 
-        <!-- Toggler/collapsibe Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Navbar links -->
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/customers}">Customers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/pawnbrokers}">Pawnbrokers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/items}">Items</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/itemCategories}">Item Categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/repayments}">Repayments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/paymentMethods}">Payment Methods</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/pawnTransactions}">Pawn Transactions</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <br>
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/customers}">Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pawnbrokers}">Pawnbrokers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/items}">Items</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/itemCategories}">Item Categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/repayments}">Repayments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/paymentMethods}">Payment Methods</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pawnTransactions}">Pawn Transactions</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<br>
 
-    <div class = "container">
-        <div class = "col-lg-6 container justify-content-center card">
-            <h1 class = "text-center">Update Item</h1>
-            <div class = "card-body">
-                <form th:action = "@{/items/{itemId}(itemId=${item.itemId})}" th:object = "${item}" method = "POST">
-                    <div class = "form-group">
-                        <label>Item Name</label>
-                        <input type = "text" maxlength = "50" name = "item-name" required = "required" th:field = "*{itemName}" class = "form-control" placeholder = "Name">
-                    </div>
+<div class="container">
+    <div class="col-lg-6 container justify-content-center card">
+        <h1 class="text-center">Update Item</h1>
+        <div class="card-body">
+            <form th:action="@{/items/{itemId}(itemId=${item.itemId})}" th:object="${item}" method="POST">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" maxlength="50" name="item-name" required="required" th:field="*{itemName}"
+                           class="form-control" placeholder="Name">
+                </div>
 
-                    <div class = "form-group">
-                        <label>Item Category</label>
-                        <select name = "item-category" required = "required" th:field = "*{itemCategory}" class = "form-control">
-                            <option th:each = "category : ${itemCategories}" th:value = "${category.itemCategoryId}" th:text = "${category.itemCategoryName}"></option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label>Item Category</label>
+                    <select name="item-category" required="required" th:field="*{itemCategory}" class="form-control">
+                        <option th:each="category : ${itemCategories}" th:value="${category.itemCategoryId}"
+                                th:text="${category.itemCategoryName}"></option>
+                    </select>
+                </div>
 
-                    <div class = "form-group">
-                        <label>Item Appraised Value</label>
-                        <input type = "number" min = "1" step=".01" name = "appraised-value" required = "required" th:field = "*{appraisedValue}" class = "form-control" placeholder = "Appraised Value">
-                    </div>
+                <div class="form-group">
+                    <label>Item Appraised Value</label>
+                    <input type="number" min="1" step=".01" name="appraised-value" required="required"
+                           th:field="*{appraisedValue}" class="form-control" placeholder="Appraised Value">
+                </div>
 
-                    <div class = "box-footer">
-                        <button type = "submit" class = "btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html>

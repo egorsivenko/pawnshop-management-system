@@ -8,70 +8,74 @@
           crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <!-- Brand -->
-        <a class="navbar-brand disabled" href="#">Pawnshop Management System</a>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand disabled" href="#">Pawnshop Management System</a>
 
-        <!-- Toggler/collapsibe Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <!-- Navbar links -->
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/customers}">Customers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/pawnbrokers}">Pawnbrokers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/items}">Items</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/itemCategories}">Item Categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/repayments}">Repayments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/paymentMethods}">Payment Methods</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/pawnTransactions}">Pawn Transactions</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="container">
-        <h1>Item Categories List</h1>
-
-        <div class="col-lg-6">
-            <a th:href = "@{itemCategories/add}" class = "btn btn-outline-primary mb-3">Add Item Category</a>
-        </div>
-
-        <table class="table table-striped table-bordered">
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="itemCategory : ${itemCategories}">
-                <td th:text="${itemCategory.itemCategoryId}"></td>
-                <td th:text="${itemCategory.itemCategoryName}"></td>
-                <td>
-                    <a th:href = "@{/itemCategories/edit/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}" class = "btn btn-info">Update</a>
-                    <a th:href = "@{/itemCategories/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}" class = "btn btn-danger">Delete</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/customers}">Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pawnbrokers}">Pawnbrokers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/items}">Items</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/itemCategories}">Item Categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/repayments}">Repayments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/paymentMethods}">Payment Methods</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pawnTransactions}">Pawn Transactions</a>
+            </li>
+        </ul>
     </div>
+</nav>
+
+<div class="container">
+    <h1>Item Categories List</h1>
+
+    <div class="col-lg-6">
+        <a th:href="@{itemCategories/add}" class="btn btn-outline-primary mb-3">Add Item Category</a>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="itemCategory : ${itemCategories}">
+            <td th:text="${itemCategory.itemCategoryId}"></td>
+            <td th:text="${itemCategory.itemCategoryName}"></td>
+            <td>
+                <div class="btn-group">
+                    <a th:href="@{/itemCategories/edit/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}"
+                       class="btn btn-info">Update</a>
+                    <a th:href="@{/itemCategories/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}"
+                       class="btn btn-danger">Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
