@@ -76,7 +76,7 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
     }
 
     @Override
-    public void addItemCategory(ItemCategory itemCategory) throws SQLException {
+    public void addItemCategory(ItemCategory itemCategory) {
         try (Connection connection = databaseConfig.createConnection()) {
             connection.setAutoCommit(false);
 
@@ -104,17 +104,21 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
             } finally {
                 connection.setAutoCommit(true);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) throws SQLException {
+    public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, itemCategoryName);
             ps.setLong(2, itemCategoryId);
 
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

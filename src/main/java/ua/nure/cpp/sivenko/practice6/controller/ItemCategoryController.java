@@ -35,12 +35,16 @@ public class ItemCategoryController {
 
     @PostMapping("/itemCategories")
     public String addItemCategory(@ModelAttribute("itemCategory") ItemCategory itemCategory) {
-        itemCategoryService.addItemCategory(itemCategory);
+        try {
+            itemCategoryService.addItemCategory(itemCategory);
+        } catch (SQLException e) {
+            log.warning(e.getMessage());
+        }
         return "redirect:/itemCategories";
     }
 
     @GetMapping("/itemCategories/edit/{itemCategoryId}")
-    public String updateCustomerForm(@PathVariable Long itemCategoryId, Model model) {
+    public String updateItemCategoryForm(@PathVariable Long itemCategoryId, Model model) {
         ItemCategory itemCategory = itemCategoryService.getItemCategoryById(itemCategoryId);
         model.addAttribute("itemCategory", itemCategory);
         return "update_itemCategory";
@@ -48,9 +52,13 @@ public class ItemCategoryController {
 
     @PostMapping("/itemCategories/{itemCategoryId}")
     public String updateItemCategory(@PathVariable Long itemCategoryId, @ModelAttribute("itemCategory") ItemCategory itemCategory, Model model) {
-        ItemCategory itemCategoryById = itemCategoryService.getItemCategoryById(itemCategoryId);
-        if (!Objects.equals(itemCategoryById, itemCategory)) {
-            itemCategoryService.updateItemCategory(itemCategoryId, itemCategory.getItemCategoryName());
+        try {
+            ItemCategory itemCategoryById = itemCategoryService.getItemCategoryById(itemCategoryId);
+            if (!Objects.equals(itemCategoryById, itemCategory)) {
+                itemCategoryService.updateItemCategory(itemCategoryId, itemCategory.getItemCategoryName());
+            }
+        } catch (SQLException e) {
+            log.warning(e.getMessage());
         }
         return "redirect:/itemCategories";
     }

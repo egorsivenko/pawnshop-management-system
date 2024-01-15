@@ -57,23 +57,27 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
     }
 
     @Override
-    public void addPaymentMethod(String paymentMethodName) throws SQLException {
+    public void addPaymentMethod(String paymentMethodName) {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, paymentMethodName);
 
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) throws SQLException {
+    public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, paymentMethodName);
             ps.setLong(2, paymentMethodId);
 
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

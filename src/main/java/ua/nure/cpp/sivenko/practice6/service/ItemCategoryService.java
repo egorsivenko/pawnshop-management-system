@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.service;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.nure.cpp.sivenko.practice6.dao.ItemCategoryDAO;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-@Log
 public class ItemCategoryService {
 
     @Autowired
@@ -24,12 +22,15 @@ public class ItemCategoryService {
         return itemCategoryDAO.getItemCategoryById(itemCategoryId);
     }
 
-    public void addItemCategory(ItemCategory itemCategory) {
-        try {
-            itemCategoryDAO.addItemCategory(itemCategory);
-        } catch (SQLException e) {
-            log.warning(e.getMessage());
+    public void addItemCategory(ItemCategory itemCategory) throws SQLException {
+        List<ItemCategory> itemCategories = itemCategoryDAO.getAllItemCategories();
+
+        for (var category : itemCategories) {
+            if (category.getItemCategoryName().equalsIgnoreCase(itemCategory.getItemCategoryName().strip())) {
+                throw new SQLException("Item Category with name '" + itemCategory.getItemCategoryName().strip() + "' already exists");
+            }
         }
+        itemCategoryDAO.addItemCategory(itemCategory);
     }
 
     public void deleteItemCategory(long itemCategoryId) throws SQLException {
@@ -40,11 +41,14 @@ public class ItemCategoryService {
         itemCategoryDAO.deleteItemCategory(itemCategoryId);
     }
 
-    public void updateItemCategory(long itemCategoryId, String itemCategoryName) {
-        try {
-            itemCategoryDAO.updateItemCategoryName(itemCategoryId, itemCategoryName);
-        } catch (SQLException e) {
-            log.warning(e.getMessage());
+    public void updateItemCategory(long itemCategoryId, String itemCategoryName) throws SQLException {
+        List<ItemCategory> itemCategories = itemCategoryDAO.getAllItemCategories();
+
+        for (var category : itemCategories) {
+            if (category.getItemCategoryName().equalsIgnoreCase(itemCategoryName.strip())) {
+                throw new SQLException("Item Category with name '" + itemCategoryName.strip() + "' already exists");
+            }
         }
+        itemCategoryDAO.updateItemCategoryName(itemCategoryId, itemCategoryName);
     }
 }

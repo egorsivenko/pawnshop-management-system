@@ -10,9 +10,9 @@ public interface ItemCategoryDAO {
 
     List<ItemCategory> getAllItemCategories();
 
-    void addItemCategory(ItemCategory itemCategory) throws SQLException;
+    void addItemCategory(ItemCategory itemCategory);
 
-    void updateItemCategoryName(long itemCategoryId, String itemCategoryName) throws SQLException;
+    void updateItemCategoryName(long itemCategoryId, String itemCategoryName);
 
     void deleteItemCategory(long itemCategoryId);
 }

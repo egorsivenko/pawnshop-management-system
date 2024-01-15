@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.service;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.nure.cpp.sivenko.practice6.dao.PaymentMethodDAO;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-@Log
 public class PaymentMethodService {
 
     @Autowired
@@ -24,12 +22,15 @@ public class PaymentMethodService {
         return paymentMethodDAO.getPaymentMethodById(paymentMethodId);
     }
 
-    public void addPaymentMethod(PaymentMethod paymentMethod) {
-        try {
-            paymentMethodDAO.addPaymentMethod(paymentMethod.getPaymentMethodName());
-        } catch (SQLException e) {
-            log.warning(e.getMessage());
+    public void addPaymentMethod(PaymentMethod paymentMethod) throws SQLException {
+        List<PaymentMethod> paymentMethods = paymentMethodDAO.getAllPaymentMethods();
+
+        for (var method : paymentMethods) {
+            if (method.getPaymentMethodName().equalsIgnoreCase(paymentMethod.getPaymentMethodName().strip())) {
+                throw new SQLException("Payment Method with name '" + paymentMethod.getPaymentMethodName().strip() + "' already exists");
+            }
         }
+        paymentMethodDAO.addPaymentMethod(paymentMethod.getPaymentMethodName());
     }
 
     public void deletePaymentMethod(long paymentMethodId) throws SQLException {
@@ -40,11 +41,14 @@ public class PaymentMethodService {
         paymentMethodDAO.deletePaymentMethod(paymentMethodId);
     }
 
-    public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) {
-        try {
-            paymentMethodDAO.updatePaymentMethodName(paymentMethodId, paymentMethodName);
-        } catch (SQLException e) {
-            log.warning(e.getMessage());
+    public void updatePaymentMethod(long paymentMethodId, String paymentMethodName) throws SQLException {
+        List<PaymentMethod> paymentMethods = paymentMethodDAO.getAllPaymentMethods();
+
+        for (var method : paymentMethods) {
+            if (method.getPaymentMethodName().equalsIgnoreCase(paymentMethodName.strip())) {
+                throw new SQLException("Payment Method with name '" + paymentMethodName.strip() + "' already exists");
+            }
         }
+        paymentMethodDAO.updatePaymentMethodName(paymentMethodId, paymentMethodName);
     }
 }

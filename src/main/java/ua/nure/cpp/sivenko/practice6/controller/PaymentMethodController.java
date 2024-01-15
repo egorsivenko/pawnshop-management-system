@@ -38,7 +38,11 @@ public class PaymentMethodController {
 
     @PostMapping("/paymentMethods")
     public String addPaymentMethod(@ModelAttribute("paymentMethod") PaymentMethod paymentMethod) {
-        paymentMethodService.addPaymentMethod(paymentMethod);
+        try {
+            paymentMethodService.addPaymentMethod(paymentMethod);
+        } catch (SQLException e) {
+            log.warning(e.getMessage());
+        }
         return "redirect:/paymentMethods";
     }
 
@@ -51,9 +55,13 @@ public class PaymentMethodController {
 
     @PostMapping("/paymentMethods/{paymentMethodId}")
     public String updatePaymentMethod(@PathVariable Long paymentMethodId, @ModelAttribute("paymentMethod") PaymentMethod paymentMethod, Model model) {
-        PaymentMethod paymentMethodById = paymentMethodService.getPaymentMethodById(paymentMethodId);
-        if (!Objects.equals(paymentMethodById, paymentMethod)) {
-            paymentMethodService.updatePaymentMethodName(paymentMethodId, paymentMethod.getPaymentMethodName());
+        try {
+            PaymentMethod paymentMethodById = paymentMethodService.getPaymentMethodById(paymentMethodId);
+            if (!Objects.equals(paymentMethodById, paymentMethod)) {
+                paymentMethodService.updatePaymentMethod(paymentMethodId, paymentMethod.getPaymentMethodName());
+            }
+        } catch (SQLException e) {
+            log.warning(e.getMessage());
         }
         return "redirect:/paymentMethods";
     }
