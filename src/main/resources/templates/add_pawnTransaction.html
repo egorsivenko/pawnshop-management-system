@@ -51,6 +51,11 @@
         <h2 class="text-center">Add New Pawn Transaction</h2>
         <div class="card-body">
             <form th:action="@{/pawnTransactions}" th:object="${pawnTransaction}" method="POST">
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
                 <div class="form-group">
                     <label>Customer ID</label>
                     <input type="number" min="1" name="customer-id" required="required" th:field="*{customerId}"

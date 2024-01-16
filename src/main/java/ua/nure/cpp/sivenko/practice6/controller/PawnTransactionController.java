@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.service.PawnTransactionService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -32,8 +33,13 @@ public class PawnTransactionController {
     }
 
     @PostMapping("/pawnTransactions")
-    public String addPawnTransaction(@ModelAttribute("pawnTransaction") PawnTransaction pawnTransaction) {
-        pawnTransactionService.addPawnTransaction(pawnTransaction);
+    public String addPawnTransaction(@ModelAttribute("pawnTransaction") PawnTransaction pawnTransaction, Model model) {
+        try {
+            pawnTransactionService.addPawnTransaction(pawnTransaction);
+        } catch (SQLException e) {
+            model.addAttribute("error", e.getMessage());
+            return "add_pawnTransaction";
+        }
         return "redirect:/pawnTransactions";
     }
 }
