@@ -36,7 +36,7 @@ public class RepaymentDAOCollectionImpl implements RepaymentDAO {
     @Override
     public List<Repayment> getRepaymentsByPaymentMethod(long paymentMethodId) {
         return repayments.stream()
-                .filter(repayment -> repayment.getPaymentMethod() == paymentMethodId)
+                .filter(repayment -> repayment.getPaymentMethodId() == paymentMethodId)
                 .collect(Collectors.toList());
     }
 

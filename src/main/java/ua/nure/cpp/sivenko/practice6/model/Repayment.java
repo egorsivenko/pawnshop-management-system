@@ -18,6 +18,6 @@ public class Repayment {
     private long repaymentId;
 
     private long transactionId;
-    private long paymentMethod;
+    private long paymentMethodId;
     private LocalDateTime repaymentDate;
 }

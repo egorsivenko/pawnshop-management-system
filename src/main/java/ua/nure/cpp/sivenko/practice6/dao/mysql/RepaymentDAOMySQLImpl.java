@@ -96,7 +96,7 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setLong(1, repayment.getTransactionId());
-            ps.setLong(2, repayment.getPaymentMethod());
+            ps.setLong(2, repayment.getPaymentMethodId());
 
             ps.executeUpdate();
         }
@@ -106,7 +106,7 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
         Repayment repayment = new Repayment();
         repayment.setRepaymentId(rs.getLong("repayment_id"));
         repayment.setTransactionId(rs.getLong("transaction_id"));
-        repayment.setPaymentMethod(rs.getLong("payment_method"));
+        repayment.setPaymentMethodId(rs.getLong("payment_method"));
         repayment.setRepaymentDate(rs.getTimestamp("repayment_date").toLocalDateTime());
         return repayment;
     }

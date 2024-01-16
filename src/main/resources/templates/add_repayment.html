@@ -59,7 +59,7 @@
 
                 <div class="form-group">
                     <label>Payment Method</label>
-                    <select name="payment-method" required="required" th:field="*{paymentMethod}" class="form-control">
+                    <select name="payment-method-id" required="required" th:field="*{paymentMethodId}" class="form-control">
                         <option th:each="paymentMethod : ${paymentMethods}" th:value="${paymentMethod.paymentMethodId}"
                                 th:text="${paymentMethod.paymentMethodName}"></option>
                     </select>

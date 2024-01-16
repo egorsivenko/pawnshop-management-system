@@ -26,6 +26,9 @@ public class RepaymentController {
     public String getAllRepayments(Model model) {
         List<Repayment> repayments = repaymentService.getAllRepayments();
         model.addAttribute("repayments", repayments);
+
+        List<PaymentMethod> paymentMethods = paymentMethodService.getAllPaymentMethods();
+        model.addAttribute("paymentMethods", paymentMethods);
         return "repayments";
     }
 
