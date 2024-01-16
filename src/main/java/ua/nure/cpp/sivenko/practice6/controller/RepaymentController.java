@@ -11,6 +11,7 @@ import ua.nure.cpp.sivenko.practice6.model.Repayment;
 import ua.nure.cpp.sivenko.practice6.service.PaymentMethodService;
 import ua.nure.cpp.sivenko.practice6.service.RepaymentService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -43,8 +44,16 @@ public class RepaymentController {
     }
 
     @PostMapping("/repayments")
-    public String addRepayment(@ModelAttribute("repayment") Repayment repayment) {
-        repaymentService.addRepayment(repayment);
+    public String addRepayment(@ModelAttribute("repayment") Repayment repayment, Model model) {
+        try {
+            repaymentService.addRepayment(repayment);
+        } catch (SQLException e) {
+            List<PaymentMethod> paymentMethods = paymentMethodService.getAllPaymentMethods();
+            model.addAttribute("paymentMethods", paymentMethods);
+
+            model.addAttribute("error", e.getMessage());
+            return "add_repayment";
+        }
         return "redirect:/repayments";
     }
 }

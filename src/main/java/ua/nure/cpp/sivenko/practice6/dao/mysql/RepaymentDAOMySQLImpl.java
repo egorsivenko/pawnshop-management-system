@@ -92,13 +92,15 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
     }
 
     @Override
-    public void addRepayment(Repayment repayment) throws SQLException {
+    public void addRepayment(Repayment repayment) {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setLong(1, repayment.getTransactionId());
             ps.setLong(2, repayment.getPaymentMethodId());
 
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

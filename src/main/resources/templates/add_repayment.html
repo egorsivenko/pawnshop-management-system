@@ -51,6 +51,11 @@
         <h2 class="text-center">Add New Repayment</h2>
         <div class="card-body">
             <form th:action="@{/repayments}" th:object="${repayment}" method="POST">
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
                 <div class="form-group">
                     <label>Transaction ID</label>
                     <input type="number" min="1" name="transaction-id" required="required" th:field="*{transactionId}"

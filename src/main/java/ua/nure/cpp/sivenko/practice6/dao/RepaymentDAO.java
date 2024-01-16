@@ -14,5 +14,5 @@ public interface RepaymentDAO {
 
     List<Repayment> getAllRepayments();
 
-    void addRepayment(Repayment repayment) throws SQLException;
+    void addRepayment(Repayment repayment);
 }
