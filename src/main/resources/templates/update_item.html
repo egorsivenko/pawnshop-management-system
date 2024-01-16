@@ -59,7 +59,7 @@
 
                 <div class="form-group">
                     <label>Item Category</label>
-                    <select name="item-category" required="required" th:field="*{itemCategory}" class="form-control">
+                    <select name="item-category-id" required="required" th:field="*{itemCategoryId}" class="form-control">
                         <option th:each="category : ${itemCategories}" th:value="${category.itemCategoryId}"
                                 th:text="${category.itemCategoryName}"></option>
                     </select>

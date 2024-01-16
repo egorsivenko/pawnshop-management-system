@@ -57,11 +57,11 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Category ID</th>
+            <th>Category</th>
             <th>Appraised Value</th>
             <th>Market Price Max</th>
             <th>Market Price Min</th>
-            <th>Item Status</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -70,7 +70,9 @@
         <tr th:each="item : ${items}">
             <td th:text="${item.itemId}"></td>
             <td th:text="${item.itemName}"></td>
-            <td th:text="${item.itemCategory}"></td>
+            <td>
+                <span th:each="category : ${itemCategories}" th:if="${category.itemCategoryId == item.itemCategoryId}" th:text="${category.itemCategoryName}"></span>
+            </td>
             <td th:text="${item.appraisedValue}"></td>
             <td th:text="${item.marketPriceMax}"></td>
             <td th:text="${item.marketPriceMin}"></td>

@@ -34,7 +34,7 @@ public class ItemDAOCollectionImpl implements ItemDAO {
     @Override
     public List<Item> getItemsByCategory(long itemCategoryId) {
         return items.stream()
-                .filter(item -> item.getItemCategory() == itemCategoryId)
+                .filter(item -> item.getItemCategoryId() == itemCategoryId)
                 .collect(Collectors.toList());
     }
 

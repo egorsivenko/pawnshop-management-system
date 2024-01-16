@@ -103,7 +103,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, item.getItemName());
-            ps.setLong(2, item.getItemCategory());
+            ps.setLong(2, item.getItemCategoryId());
             ps.setBigDecimal(3, item.getAppraisedValue());
 
             ps.executeUpdate();
@@ -117,7 +117,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, item.getItemName());
-            ps.setLong(2, item.getItemCategory());
+            ps.setLong(2, item.getItemCategoryId());
             ps.setBigDecimal(3, item.getAppraisedValue());
             ps.setLong(4, itemId);
 
@@ -143,7 +143,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
         Item item = new Item();
         item.setItemId(rs.getLong("item_id"));
         item.setItemName(rs.getString("item_name"));
-        item.setItemCategory(rs.getLong("item_category"));
+        item.setItemCategoryId(rs.getLong("item_category"));
         item.setAppraisedValue(rs.getBigDecimal("appraised_value"));
         item.setMarketPriceMax(rs.getBigDecimal("market_price_max"));
         item.setMarketPriceMin(rs.getBigDecimal("market_price_min"));

@@ -18,7 +18,7 @@ public class Item {
     private long itemId;
 
     private String itemName;
-    private long itemCategory;
+    private long itemCategoryId;
     private BigDecimal appraisedValue;
     private BigDecimal marketPriceMax;
     private BigDecimal marketPriceMin;

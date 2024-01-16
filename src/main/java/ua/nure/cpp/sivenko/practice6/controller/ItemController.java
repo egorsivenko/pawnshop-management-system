@@ -31,6 +31,9 @@ public class ItemController {
     public String getAllItems(Model model) {
         List<Item> items = itemService.getAllItems();
         model.addAttribute("items", items);
+
+        List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
+        model.addAttribute("itemCategories", itemCategories);
         return "items";
     }
 
