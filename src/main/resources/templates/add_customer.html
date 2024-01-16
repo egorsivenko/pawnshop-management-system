@@ -51,6 +51,11 @@
         <h2 class="text-center">Add New Customer</h2>
         <div class="card-body">
             <form th:action="@{/customers}" th:object="${customer}" method="POST">
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
                 <div class="form-group">
                     <label>Customer First Name</label>
                     <input type="text" name="first-name" required="required" pattern="[A-Za-z]{2,50}"

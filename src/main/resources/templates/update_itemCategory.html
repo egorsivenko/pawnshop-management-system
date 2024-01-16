@@ -52,6 +52,11 @@
         <div class="card-body">
             <form th:action="@{/itemCategories/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}"
                   th:object="${itemCategory}" method="POST">
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
                 <div class="form-group">
                     <label>Item Category Name</label>
                     <input type="text" name="itemCategory-name" required="required" pattern="[A-Z a-z]{2,50}"

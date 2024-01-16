@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.controller;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@Log
 public class PaymentMethodController {
 
     @Autowired
@@ -37,11 +35,12 @@ public class PaymentMethodController {
     }
 
     @PostMapping("/paymentMethods")
-    public String addPaymentMethod(@ModelAttribute("paymentMethod") PaymentMethod paymentMethod) {
+    public String addPaymentMethod(@ModelAttribute("paymentMethod") PaymentMethod paymentMethod, Model model) {
         try {
             paymentMethodService.addPaymentMethod(paymentMethod);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "add_paymentMethod";
         }
         return "redirect:/paymentMethods";
     }
@@ -61,17 +60,18 @@ public class PaymentMethodController {
                 paymentMethodService.updatePaymentMethod(paymentMethodId, paymentMethod.getPaymentMethodName());
             }
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "update_paymentMethod";
         }
         return "redirect:/paymentMethods";
     }
 
     @GetMapping("/paymentMethods/{paymentMethodId}")
-    public String deletePaymentMethod(@PathVariable Long paymentMethodId) {
+    public String deletePaymentMethod(@PathVariable Long paymentMethodId, Model model) {
         try {
             paymentMethodService.deletePaymentMethod(paymentMethodId);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/paymentMethods";
     }

@@ -52,6 +52,11 @@
         <div class="card-body">
             <form th:action="@{/pawnbrokers/{pawnbrokerId}(pawnbrokerId=${pawnbroker.pawnbrokerId})}"
                   th:object="${pawnbroker}" method="POST">
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
                 <div class="form-group">
                     <label>Pawnbroker First Name</label>
                     <input type="text" name="first-name" required="required" pattern="[A-Za-z]{2,50}"

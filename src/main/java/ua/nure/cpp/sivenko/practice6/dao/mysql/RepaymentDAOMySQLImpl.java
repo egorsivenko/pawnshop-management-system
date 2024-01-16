@@ -2,9 +2,9 @@ package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.RepaymentDAO;
 import ua.nure.cpp.sivenko.practice6.model.Repayment;
-import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -3,7 +3,6 @@ package ua.nure.cpp.sivenko.practice6.dao;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.Item.ItemStatus;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface ItemDAO {

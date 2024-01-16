@@ -52,6 +52,11 @@
         <div class="card-body">
             <form th:action="@{/paymentMethods/{paymentMethodId}(paymentMethodId=${paymentMethod.paymentMethodId})}"
                   th:object="${paymentMethod}" method="POST">
+                <!-- Display error message -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+
                 <div class="form-group">
                     <label>Payment Method Name</label>
                     <input type="text" name="paymentMethod-name" required="required" pattern="[A-Z a-z]{2,50}"

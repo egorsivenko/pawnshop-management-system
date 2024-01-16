@@ -52,6 +52,11 @@
         <a th:href="@{paymentMethods/add}" class="btn btn-outline-primary mb-3">Add Payment Method</a>
     </div>
 
+    <!-- Display error message -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
         <tr>

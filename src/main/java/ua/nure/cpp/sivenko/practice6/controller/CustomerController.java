@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.controller;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@Log
 public class CustomerController {
 
     @Autowired
@@ -34,11 +32,12 @@ public class CustomerController {
     }
 
     @PostMapping("/customers")
-    public String addCustomer(@ModelAttribute("customer") Customer customer) {
+    public String addCustomer(@ModelAttribute("customer") Customer customer, Model model) {
         try {
             customerService.addCustomer(customer);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "add_customer";
         }
         return "redirect:/customers";
     }
@@ -58,17 +57,18 @@ public class CustomerController {
                 customerService.updateCustomer(customerId, customer);
             }
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "update_customer";
         }
         return "redirect:/customers";
     }
 
     @GetMapping("/customers/{customerId}")
-    public String deleteCustomer(@PathVariable Long customerId) {
+    public String deleteCustomer(@PathVariable Long customerId, Model model) {
         try {
             customerService.deleteCustomer(customerId);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/customers";
     }

@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.controller;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@Log
 public class ItemCategoryController {
 
     @Autowired
@@ -34,11 +32,12 @@ public class ItemCategoryController {
     }
 
     @PostMapping("/itemCategories")
-    public String addItemCategory(@ModelAttribute("itemCategory") ItemCategory itemCategory) {
+    public String addItemCategory(@ModelAttribute("itemCategory") ItemCategory itemCategory, Model model) {
         try {
             itemCategoryService.addItemCategory(itemCategory);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "add_itemCategory";
         }
         return "redirect:/itemCategories";
     }
@@ -58,17 +57,18 @@ public class ItemCategoryController {
                 itemCategoryService.updateItemCategory(itemCategoryId, itemCategory.getItemCategoryName());
             }
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "update_itemCategory";
         }
         return "redirect:/itemCategories";
     }
 
     @GetMapping("/itemCategories/{itemCategoryId}")
-    public String deleteItemCategory(@PathVariable Long itemCategoryId) {
+    public String deleteItemCategory(@PathVariable Long itemCategoryId, Model model) {
         try {
             itemCategoryService.deleteItemCategory(itemCategoryId);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/itemCategories";
     }

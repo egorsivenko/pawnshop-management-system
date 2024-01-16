@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.controller;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@Log
 public class PawnbrokerController {
 
     @Autowired
@@ -37,11 +35,12 @@ public class PawnbrokerController {
     }
 
     @PostMapping("/pawnbrokers")
-    public String addPawnbroker(@ModelAttribute("pawnbroker") Pawnbroker pawnbroker) {
+    public String addPawnbroker(@ModelAttribute("pawnbroker") Pawnbroker pawnbroker, Model model) {
         try {
             pawnbrokerService.addPawnbroker(pawnbroker);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "add_pawnbroker";
         }
         return "redirect:/pawnbrokers";
     }
@@ -61,17 +60,18 @@ public class PawnbrokerController {
                 pawnbrokerService.updatePawnbroker(pawnbrokerId, pawnbroker);
             }
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "update_pawnbroker";
         }
         return "redirect:/pawnbrokers";
     }
 
     @GetMapping("/pawnbrokers/{pawnbrokerId}")
-    public String deletePawnbroker(@PathVariable Long pawnbrokerId) {
+    public String deletePawnbroker(@PathVariable Long pawnbrokerId, Model model) {
         try {
             pawnbrokerService.deletePawnbroker(pawnbrokerId);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/pawnbrokers";
     }

@@ -1,6 +1,5 @@
 package ua.nure.cpp.sivenko.practice6.controller;
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@Log
 public class ItemController {
 
     @Autowired
@@ -73,11 +71,11 @@ public class ItemController {
     }
 
     @GetMapping("/items/{itemId}")
-    public String deleteItem(@PathVariable Long itemId) {
+    public String deleteItem(@PathVariable Long itemId, Model model) {
         try {
             itemService.deleteItem(itemId);
         } catch (SQLException e) {
-            log.warning(e.getMessage());
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/items";
     }
