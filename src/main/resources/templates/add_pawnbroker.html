@@ -50,7 +50,7 @@
     <div class="col-lg-6 container justify-content-center card">
         <h2 class="text-center">Add New Pawnbroker</h2>
         <div class="card-body">
-            <form th:action="@{/pawnbrokers}" th:object="${pawnbroker}" method="POST">
+            <form th:action="@{/pawnbrokers}" th:object="${pawnbrokerForm}" method="POST">
                 <!-- Display error message -->
                 <div th:if="${error}" class="alert alert-danger" role="alert">
                     <span th:text="${error}"></span>
@@ -90,6 +90,13 @@
                     <label>Pawnbroker Address</label>
                     <input type="text" maxlength="100" name="address" required="required" th:field="*{address}"
                            class="form-control" placeholder="Address">
+                </div>
+
+                <div class="form-group">
+                    <label>Pawnbroker Specializations</label>
+                    <select name="specializationIds" required="required" th:field="*{specializationIds}" class="form-control" multiple="multiple">
+                        <option th:each="category : ${itemCategories}" th:value="${category.itemCategoryId}" th:text="${category.itemCategoryName}"></option>
+                    </select>
                 </div>
 
                 <div class="box-footer">

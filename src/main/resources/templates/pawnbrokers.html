@@ -67,6 +67,7 @@
             <th>Contact Number</th>
             <th>Email</th>
             <th>Address</th>
+            <th>Specializations</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -80,6 +81,11 @@
             <td th:text="${pawnbroker.contactNumber}"></td>
             <td th:text="${pawnbroker.email}"></td>
             <td th:text="${pawnbroker.address}"></td>
+            <td>
+                <div th:each="specialization : ${pawnbroker.specializations}">
+                    <div th:text="${specialization.itemCategoryName}"></div>
+                </div>
+            </td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/pawnbrokers/edit/{pawnbrokerId}(pawnbrokerId=${pawnbroker.pawnbrokerId})}"

@@ -62,6 +62,7 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Active Pawnbrokers IDs</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -70,6 +71,11 @@
         <tr th:each="itemCategory : ${itemCategories}">
             <td th:text="${itemCategory.itemCategoryId}"></td>
             <td th:text="${itemCategory.itemCategoryName}"></td>
+            <td>
+                <div th:with="pawnbrokerIds=${itemCategory.activePawnbrokers.![pawnbrokerId]}">
+                    <div th:text="${pawnbrokerIds}"></div>
+                </div>
+            </td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/itemCategories/edit/{itemCategoryId}(itemCategoryId=${itemCategory.itemCategoryId})}"
