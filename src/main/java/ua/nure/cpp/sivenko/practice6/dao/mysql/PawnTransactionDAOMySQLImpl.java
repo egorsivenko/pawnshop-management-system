@@ -2,7 +2,7 @@ package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ua.nure.cpp.sivenko.practice6.DatabaseConfig;
+import ua.nure.cpp.sivenko.practice6.config.DatabaseConfig;
 import ua.nure.cpp.sivenko.practice6.dao.PawnTransactionDAO;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction.TransactionStatus;

@@ -1,4 +1,4 @@
-package ua.nure.cpp.sivenko.practice6;
+package ua.nure.cpp.sivenko.practice6.config;
 
 import lombok.Getter;
 import lombok.Setter;
