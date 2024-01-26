@@ -111,7 +111,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
             ps.setInt(6, pawnTransaction.getMonthlyPeriod());
 
             ps.executeUpdate();
-        }
+        } // exception from the trigger may be thrown
     }
 
     private PawnTransaction mapPawnTransaction(ResultSet rs) throws SQLException {
