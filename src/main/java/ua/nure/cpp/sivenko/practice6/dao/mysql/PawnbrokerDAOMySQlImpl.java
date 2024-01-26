@@ -34,20 +34,18 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerById(long pawnbrokerId) {
-        try (Connection connection = databaseConfig.createConnection()) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+        try (Connection connection = databaseConfig.createConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_BY_ID);
+             PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_BY_ID);
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
-                ps.setLong(1, pawnbrokerId);
-                Pawnbroker pawnbroker = getPawnbroker(ps);
+            ps.setLong(1, pawnbrokerId);
+            Pawnbroker pawnbroker = getPawnbroker(ps);
 
-                if (pawnbroker != null) {
-                    ps_pawn_spec.setLong(1, pawnbrokerId);
-                    pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
-                }
-                return pawnbroker;
+            if (pawnbroker != null) {
+                ps_pawn_spec.setLong(1, pawnbrokerId);
+                pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
             }
+            return pawnbroker;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -55,20 +53,18 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerByContactNumber(String contactNumber) {
-        try (Connection connection = databaseConfig.createConnection()) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+        try (Connection connection = databaseConfig.createConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_BY_CONTACT_NUMBER);
+             PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_BY_CONTACT_NUMBER);
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
-                ps.setString(1, contactNumber);
-                Pawnbroker pawnbroker = getPawnbroker(ps);
+            ps.setString(1, contactNumber);
+            Pawnbroker pawnbroker = getPawnbroker(ps);
 
-                if (pawnbroker != null) {
-                    ps_pawn_spec.setLong(1, pawnbroker.getPawnbrokerId());
-                    pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
-                }
-                return pawnbroker;
+            if (pawnbroker != null) {
+                ps_pawn_spec.setLong(1, pawnbroker.getPawnbrokerId());
+                pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
             }
+            return pawnbroker;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,20 +72,18 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
 
     @Override
     public Pawnbroker getPawnbrokerByEmail(String email) {
-        try (Connection connection = databaseConfig.createConnection()) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+        try (Connection connection = databaseConfig.createConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_BY_EMAIL);
+             PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_BY_EMAIL);
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
-                ps.setString(1, email);
-                Pawnbroker pawnbroker = getPawnbroker(ps);
+            ps.setString(1, email);
+            Pawnbroker pawnbroker = getPawnbroker(ps);
 
-                if (pawnbroker != null) {
-                    ps_pawn_spec.setLong(1, pawnbroker.getPawnbrokerId());
-                    pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
-                }
-                return pawnbroker;
+            if (pawnbroker != null) {
+                ps_pawn_spec.setLong(1, pawnbroker.getPawnbrokerId());
+                pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
             }
+            return pawnbroker;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -99,21 +93,18 @@ public class PawnbrokerDAOMySQlImpl implements PawnbrokerDAO {
     public List<Pawnbroker> getAllPawnbrokers() {
         List<Pawnbroker> pawnbrokers = new ArrayList<>();
 
-        try (Connection connection = databaseConfig.createConnection()) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+        try (Connection connection = databaseConfig.createConnection();
+             Statement st = connection.createStatement();
+             PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION);
+             ResultSet rs = st.executeQuery(GET_ALL)) {
 
-            try (Statement st = connection.createStatement();
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION);
-                 ResultSet rs = st.executeQuery(GET_ALL)) {
+            while (rs.next()) {
+                Pawnbroker pawnbroker = mapPawnbroker(rs);
 
-                while (rs.next()) {
-                    Pawnbroker pawnbroker = mapPawnbroker(rs);
+                ps_pawn_spec.setLong(1, pawnbroker.getPawnbrokerId());
+                pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
 
-                    ps_pawn_spec.setLong(1, pawnbroker.getPawnbrokerId());
-                    pawnbroker.setSpecializations(getPawnbrokerSpecializations(ps_pawn_spec));
-
-                    pawnbrokers.add(pawnbroker);
-                }
+                pawnbrokers.add(pawnbroker);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

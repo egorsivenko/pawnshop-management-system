@@ -30,20 +30,18 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
 
     @Override
     public ItemCategory getItemCategoryById(long itemCategoryId) {
-        try (Connection connection = databaseConfig.createConnection()) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+        try (Connection connection = databaseConfig.createConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_BY_ID);
+             PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_BY_ID);
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION)) {
-                ps.setLong(1, itemCategoryId);
-                ItemCategory itemCategory = getItemCategory(ps);
+            ps.setLong(1, itemCategoryId);
+            ItemCategory itemCategory = getItemCategory(ps);
 
-                if (itemCategory != null) {
-                    ps_pawn_spec.setLong(1, itemCategoryId);
-                    itemCategory.setActivePawnbrokers(getActivePawnbrokers(ps_pawn_spec));
-                }
-                return itemCategory;
+            if (itemCategory != null) {
+                ps_pawn_spec.setLong(1, itemCategoryId);
+                itemCategory.setActivePawnbrokers(getActivePawnbrokers(ps_pawn_spec));
             }
+            return itemCategory;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -53,21 +51,18 @@ public class ItemCategoryDAOMySQLImpl implements ItemCategoryDAO {
     public List<ItemCategory> getAllItemCategories() {
         List<ItemCategory> itemCategories = new ArrayList<>();
 
-        try (Connection connection = databaseConfig.createConnection()) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+        try (Connection connection = databaseConfig.createConnection();
+             Statement st = connection.createStatement();
+             PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION);
+             ResultSet rs = st.executeQuery(GET_ALL)) {
 
-            try (Statement st = connection.createStatement();
-                 PreparedStatement ps_pawn_spec = connection.prepareStatement(SELECT_PAWNBROKER_SPECIALIZATION);
-                 ResultSet rs = st.executeQuery(GET_ALL)) {
+            while (rs.next()) {
+                ItemCategory itemCategory = mapItemCategory(rs);
 
-                while (rs.next()) {
-                    ItemCategory itemCategory = mapItemCategory(rs);
+                ps_pawn_spec.setLong(1, itemCategory.getItemCategoryId());
+                itemCategory.setActivePawnbrokers(getActivePawnbrokers(ps_pawn_spec));
 
-                    ps_pawn_spec.setLong(1, itemCategory.getItemCategoryId());
-                    itemCategory.setActivePawnbrokers(getActivePawnbrokers(ps_pawn_spec));
-
-                    itemCategories.add(itemCategory);
-                }
+                itemCategories.add(itemCategory);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
