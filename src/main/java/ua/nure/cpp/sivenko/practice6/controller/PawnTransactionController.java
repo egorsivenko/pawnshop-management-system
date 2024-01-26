@@ -22,14 +22,14 @@ public class PawnTransactionController {
     public String getAllPawnTransactions(Model model) {
         List<PawnTransaction> pawnTransactions = pawnTransactionService.getAllPawnTransactions();
         model.addAttribute("pawnTransactions", pawnTransactions);
-        return "pawnTransactions";
+        return "pawnTransaction/pawnTransactions";
     }
 
     @GetMapping("/pawnTransactions/add")
     public String addPawnTransactionForm(Model model) {
         PawnTransaction pawnTransaction = new PawnTransaction();
         model.addAttribute("pawnTransaction", pawnTransaction);
-        return "add_pawnTransaction";
+        return "pawnTransaction/add_pawnTransaction";
     }
 
     @PostMapping("/pawnTransactions")
@@ -38,7 +38,7 @@ public class PawnTransactionController {
             pawnTransactionService.addPawnTransaction(pawnTransaction);
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "add_pawnTransaction";
+            return "pawnTransaction/add_pawnTransaction";
         }
         return "redirect:/pawnTransactions";
     }

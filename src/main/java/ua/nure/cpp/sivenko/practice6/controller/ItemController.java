@@ -32,7 +32,7 @@ public class ItemController {
 
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
-        return "items";
+        return "item/items";
     }
 
     @GetMapping("/items/add")
@@ -42,7 +42,7 @@ public class ItemController {
 
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
-        return "add_item";
+        return "item/add_item";
     }
 
     @PostMapping("/items")
@@ -58,7 +58,7 @@ public class ItemController {
 
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
-        return "update_item";
+        return "item/update_item";
     }
 
     @PostMapping("/items/{itemId}")

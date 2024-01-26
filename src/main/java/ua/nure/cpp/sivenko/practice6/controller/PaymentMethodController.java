@@ -24,14 +24,14 @@ public class PaymentMethodController {
     public String getAllPaymentMethods(Model model) {
         List<PaymentMethod> paymentMethods = paymentMethodService.getAllPaymentMethods();
         model.addAttribute("paymentMethods", paymentMethods);
-        return "paymentMethods";
+        return "paymentMethod/paymentMethods";
     }
 
     @GetMapping("/paymentMethods/add")
     public String addPaymentMethodForm(Model model) {
         PaymentMethod paymentMethod = new PaymentMethod();
         model.addAttribute("paymentMethod", paymentMethod);
-        return "add_paymentMethod";
+        return "paymentMethod/add_paymentMethod";
     }
 
     @PostMapping("/paymentMethods")
@@ -40,7 +40,7 @@ public class PaymentMethodController {
             paymentMethodService.addPaymentMethod(paymentMethod);
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "add_paymentMethod";
+            return "paymentMethod/add_paymentMethod";
         }
         return "redirect:/paymentMethods";
     }
@@ -49,7 +49,7 @@ public class PaymentMethodController {
     public String updatePaymentMethodForm(@PathVariable Long paymentMethodId, Model model) {
         PaymentMethod paymentMethodById = paymentMethodService.getPaymentMethodById(paymentMethodId);
         model.addAttribute("paymentMethod", paymentMethodById);
-        return "update_paymentMethod";
+        return "paymentMethod/update_paymentMethod";
     }
 
     @PostMapping("/paymentMethods/{paymentMethodId}")
@@ -61,7 +61,7 @@ public class PaymentMethodController {
             }
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "update_paymentMethod";
+            return "paymentMethod/update_paymentMethod";
         }
         return "redirect:/paymentMethods";
     }

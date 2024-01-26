@@ -30,7 +30,7 @@ public class RepaymentController {
 
         List<PaymentMethod> paymentMethods = paymentMethodService.getAllPaymentMethods();
         model.addAttribute("paymentMethods", paymentMethods);
-        return "repayments";
+        return "repayment/repayments";
     }
 
     @GetMapping("/repayments/add")
@@ -40,7 +40,7 @@ public class RepaymentController {
 
         List<PaymentMethod> paymentMethods = paymentMethodService.getAllPaymentMethods();
         model.addAttribute("paymentMethods", paymentMethods);
-        return "add_repayment";
+        return "repayment/add_repayment";
     }
 
     @PostMapping("/repayments")
@@ -52,7 +52,7 @@ public class RepaymentController {
             model.addAttribute("paymentMethods", paymentMethods);
 
             model.addAttribute("error", e.getMessage());
-            return "add_repayment";
+            return "repayment/add_repayment";
         }
         return "redirect:/repayments";
     }

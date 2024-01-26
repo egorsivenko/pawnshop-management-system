@@ -30,7 +30,7 @@ public class PawnbrokerController {
     public String getAllPawnbrokers(Model model) {
         List<Pawnbroker> pawnbrokers = pawnbrokerService.getAllPawnbrokers();
         model.addAttribute("pawnbrokers", pawnbrokers);
-        return "pawnbrokers";
+        return "pawnbroker/pawnbrokers";
     }
 
     @GetMapping("/pawnbrokers/add")
@@ -40,7 +40,7 @@ public class PawnbrokerController {
 
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
-        return "add_pawnbroker";
+        return "pawnbroker/add_pawnbroker";
     }
 
     @PostMapping("/pawnbrokers")
@@ -50,7 +50,7 @@ public class PawnbrokerController {
             pawnbrokerService.addPawnbroker(pawnbroker);
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "add_pawnbroker";
+            return "pawnbroker/add_pawnbroker";
         }
         return "redirect:/pawnbrokers";
     }
@@ -63,7 +63,7 @@ public class PawnbrokerController {
 
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
-        return "update_pawnbroker";
+        return "pawnbroker/update_pawnbroker";
     }
 
     @PostMapping("/pawnbrokers/{pawnbrokerId}")
@@ -76,7 +76,7 @@ public class PawnbrokerController {
             }
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "update_pawnbroker";
+            return "pawnbroker/update_pawnbroker";
         }
         return "redirect:/pawnbrokers";
     }

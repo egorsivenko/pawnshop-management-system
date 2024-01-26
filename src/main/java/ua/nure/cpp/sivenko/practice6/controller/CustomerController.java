@@ -21,14 +21,14 @@ public class CustomerController {
     public String getAllCustomers(Model model) {
         List<Customer> customers = customerService.getAllCustomers();
         model.addAttribute("customers", customers);
-        return "customers";
+        return "customer/customers";
     }
 
     @GetMapping("/customers/add")
     public String addCustomerForm(Model model) {
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
-        return "add_customer";
+        return "customer/add_customer";
     }
 
     @PostMapping("/customers")
@@ -37,7 +37,7 @@ public class CustomerController {
             customerService.addCustomer(customer);
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "add_customer";
+            return "customer/add_customer";
         }
         return "redirect:/customers";
     }
@@ -46,7 +46,7 @@ public class CustomerController {
     public String updateCustomerForm(@PathVariable Long customerId, Model model) {
         Customer customer = customerService.getCustomerById(customerId);
         model.addAttribute("customer", customer);
-        return "update_customer";
+        return "customer/update_customer";
     }
 
     @PostMapping("/customers/{customerId}")
@@ -58,7 +58,7 @@ public class CustomerController {
             }
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "update_customer";
+            return "customer/update_customer";
         }
         return "redirect:/customers";
     }

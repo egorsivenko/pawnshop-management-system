@@ -21,14 +21,14 @@ public class ItemCategoryController {
     public String getAllItemCategories(Model model) {
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
-        return "itemCategories";
+        return "itemCategory/itemCategories";
     }
 
     @GetMapping("/itemCategories/add")
     public String addItemCategoryForm(Model model) {
         ItemCategory itemCategory = new ItemCategory();
         model.addAttribute("itemCategory", itemCategory);
-        return "add_itemCategory";
+        return "itemCategory/add_itemCategory";
     }
 
     @PostMapping("/itemCategories")
@@ -37,7 +37,7 @@ public class ItemCategoryController {
             itemCategoryService.addItemCategory(itemCategory);
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "add_itemCategory";
+            return "itemCategory/add_itemCategory";
         }
         return "redirect:/itemCategories";
     }
@@ -46,7 +46,7 @@ public class ItemCategoryController {
     public String updateItemCategoryForm(@PathVariable Long itemCategoryId, Model model) {
         ItemCategory itemCategory = itemCategoryService.getItemCategoryById(itemCategoryId);
         model.addAttribute("itemCategory", itemCategory);
-        return "update_itemCategory";
+        return "itemCategory/update_itemCategory";
     }
 
     @PostMapping("/itemCategories/{itemCategoryId}")
@@ -58,7 +58,7 @@ public class ItemCategoryController {
             }
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
-            return "update_itemCategory";
+            return "itemCategory/update_itemCategory";
         }
         return "redirect:/itemCategories";
     }
