@@ -14,9 +14,9 @@ BEGIN
     FROM items i WHERE i.item_id = NEW.item_id;
 
     IF NOT EXISTS (SELECT * FROM pawnbroker_specialization WHERE pawnbroker_id = NEW.pawnbroker_id AND specialization = item_category) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pawnbroker is not specialized in this item category.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pawnbroker is not specialized in this item category';
     ELSEIF (NEW.pawn_amount > item_market_price_max OR NEW.pawn_amount < item_market_price_min) THEN
-        SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid pawn amount value.';
+        SIGNAL SQLSTATE '22003' SET MESSAGE_TEXT = 'Invalid pawn amount value';
     END IF;
 END $$
 
