@@ -53,8 +53,8 @@ public class ItemCategoryController {
     public String updateItemCategory(@PathVariable Long itemCategoryId, @ModelAttribute("itemCategory") ItemCategory itemCategory, Model model) {
         try {
             ItemCategory itemCategoryById = itemCategoryService.getItemCategoryById(itemCategoryId);
-            if (!Objects.equals(itemCategoryById, itemCategory)) {
-                itemCategoryService.updateItemCategory(itemCategoryId, itemCategory.getItemCategoryName());
+            if (!Objects.equals(itemCategoryById.getItemCategoryName(), itemCategory.getItemCategoryName())) {
+                itemCategoryService.updateItemCategoryName(itemCategoryId, itemCategory.getItemCategoryName());
             }
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());

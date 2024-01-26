@@ -41,7 +41,7 @@ public class PaymentMethodService {
         paymentMethodDAO.deletePaymentMethod(paymentMethodId);
     }
 
-    public void updatePaymentMethod(long paymentMethodId, String paymentMethodName) throws SQLException {
+    public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) throws SQLException {
         List<PaymentMethod> paymentMethods = paymentMethodDAO.getAllPaymentMethods();
 
         for (var method : paymentMethods) {

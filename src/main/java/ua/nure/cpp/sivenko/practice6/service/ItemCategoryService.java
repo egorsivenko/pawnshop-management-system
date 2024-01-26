@@ -41,7 +41,7 @@ public class ItemCategoryService {
         itemCategoryDAO.deleteItemCategory(itemCategoryId);
     }
 
-    public void updateItemCategory(long itemCategoryId, String itemCategoryName) throws SQLException {
+    public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) throws SQLException {
         List<ItemCategory> itemCategories = itemCategoryDAO.getAllItemCategories();
 
         for (var category : itemCategories) {

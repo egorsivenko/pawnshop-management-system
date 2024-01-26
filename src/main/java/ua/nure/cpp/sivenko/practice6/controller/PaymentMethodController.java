@@ -57,7 +57,7 @@ public class PaymentMethodController {
         try {
             PaymentMethod paymentMethodById = paymentMethodService.getPaymentMethodById(paymentMethodId);
             if (!Objects.equals(paymentMethodById, paymentMethod)) {
-                paymentMethodService.updatePaymentMethod(paymentMethodId, paymentMethod.getPaymentMethodName());
+                paymentMethodService.updatePaymentMethodName(paymentMethodId, paymentMethod.getPaymentMethodName());
             }
         } catch (SQLException e) {
             model.addAttribute("error", e.getMessage());
