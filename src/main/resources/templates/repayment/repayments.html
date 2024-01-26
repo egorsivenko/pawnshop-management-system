@@ -65,7 +65,11 @@
         <tbody>
         <tr th:each="repayment : ${repayments}">
             <td th:text="${repayment.repaymentId}"></td>
-            <td th:text="${repayment.transactionId}"></td>
+            <td>
+                <a th:href="@{/pawnTransactions?id={transactionId}(transactionId=${repayment.transactionId})}">
+                    <span th:text="${repayment.transactionId}"></span>
+                </a>
+            </td>
             <td>
                 <span th:each="paymentMethod : ${paymentMethods}" th:if="${paymentMethod.paymentMethodId == repayment.paymentMethodId}" th:text="${paymentMethod.paymentMethodName}"></span>
             </td>

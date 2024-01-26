@@ -72,9 +72,21 @@
         <tbody>
         <tr th:each="pawnTransaction : ${pawnTransactions}">
             <td th:text="${pawnTransaction.transactionId}"></td>
-            <td th:text="${pawnTransaction.customerId}"></td>
-            <td th:text="${pawnTransaction.itemId}"></td>
-            <td th:text="${pawnTransaction.pawnbrokerId}"></td>
+            <td>
+                <a th:href="@{/customers?id={customerId}(customerId=${pawnTransaction.customerId})}">
+                    <span th:text="${pawnTransaction.customerId}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/items?id={itemId}(itemId=${pawnTransaction.itemId})}">
+                    <span th:text="${pawnTransaction.itemId}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/pawnbrokers?id={pawnbrokerId}(pawnbrokerId=${pawnTransaction.pawnbrokerId})}">
+                    <span th:text="${pawnTransaction.pawnbrokerId}"></span>
+                </a>
+            </td>
             <td th:text="${pawnTransaction.pawnAmount}"></td>
             <td th:text="${pawnTransaction.interestRate}"></td>
             <td th:text="${pawnTransaction.monthlyPeriod}"></td>

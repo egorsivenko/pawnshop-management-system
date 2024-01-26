@@ -6,10 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.service.PawnTransactionService;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -19,9 +21,16 @@ public class PawnTransactionController {
     private PawnTransactionService pawnTransactionService;
 
     @GetMapping("/pawnTransactions")
-    public String getAllPawnTransactions(Model model) {
-        List<PawnTransaction> pawnTransactions = pawnTransactionService.getAllPawnTransactions();
-        model.addAttribute("pawnTransactions", pawnTransactions);
+    public String getPawnTransactions(@RequestParam(value = "id", required = false) Long transactionId, Model model) {
+        if (transactionId != null) {
+            PawnTransaction pawnTransaction = pawnTransactionService.getPawnTransactionById(transactionId);
+            if (pawnTransaction != null) {
+                model.addAttribute("pawnTransactions", Collections.singletonList(pawnTransaction));
+            }
+        } else {
+            List<PawnTransaction> pawnTransactions = pawnTransactionService.getAllPawnTransactions();
+            model.addAttribute("pawnTransactions", pawnTransactions);
+        }
         return "pawnTransaction/pawnTransactions";
     }
 

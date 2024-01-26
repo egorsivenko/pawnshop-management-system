@@ -3,16 +3,14 @@ package ua.nure.cpp.sivenko.practice6.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
 import ua.nure.cpp.sivenko.practice6.service.ItemCategoryService;
 import ua.nure.cpp.sivenko.practice6.service.ItemService;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,10 +24,16 @@ public class ItemController {
     private ItemCategoryService itemCategoryService;
 
     @GetMapping("/items")
-    public String getAllItems(Model model) {
-        List<Item> items = itemService.getAllItems();
-        model.addAttribute("items", items);
-
+    public String getItems(@RequestParam(value = "id", required = false) Long itemId, Model model) {
+        if (itemId != null) {
+            Item item = itemService.getItemById(itemId);
+            if (item != null) {
+                model.addAttribute("items", Collections.singletonList(item));
+            }
+        } else {
+            List<Item> items = itemService.getAllItems();
+            model.addAttribute("items", items);
+        }
         List<ItemCategory> itemCategories = itemCategoryService.getAllItemCategories();
         model.addAttribute("itemCategories", itemCategories);
         return "item/items";

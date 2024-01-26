@@ -8,6 +8,7 @@ import ua.nure.cpp.sivenko.practice6.service.CustomerService;
 import ua.nure.cpp.sivenko.practice6.model.Customer;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,9 +19,16 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping("/customers")
-    public String getAllCustomers(Model model) {
-        List<Customer> customers = customerService.getAllCustomers();
-        model.addAttribute("customers", customers);
+    public String getCustomers(@RequestParam(value = "id", required = false) Long customerId, Model model) {
+        if (customerId != null) {
+            Customer customer = customerService.getCustomerById(customerId);
+            if (customer != null) {
+                model.addAttribute("customers", Collections.singletonList(customer));
+            }
+        } else {
+            List<Customer> customers = customerService.getAllCustomers();
+            model.addAttribute("customers", customers);
+        }
         return "customer/customers";
     }
 

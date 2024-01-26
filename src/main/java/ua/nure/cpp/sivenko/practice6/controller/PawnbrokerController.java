@@ -3,10 +3,7 @@ package ua.nure.cpp.sivenko.practice6.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.nure.cpp.sivenko.practice6.form.PawnbrokerForm;
 import ua.nure.cpp.sivenko.practice6.model.ItemCategory;
 import ua.nure.cpp.sivenko.practice6.model.Pawnbroker;
@@ -14,6 +11,7 @@ import ua.nure.cpp.sivenko.practice6.service.ItemCategoryService;
 import ua.nure.cpp.sivenko.practice6.service.PawnbrokerService;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,9 +25,16 @@ public class PawnbrokerController {
     private ItemCategoryService itemCategoryService;
 
     @GetMapping("/pawnbrokers")
-    public String getAllPawnbrokers(Model model) {
-        List<Pawnbroker> pawnbrokers = pawnbrokerService.getAllPawnbrokers();
-        model.addAttribute("pawnbrokers", pawnbrokers);
+    public String getPawnbrokers(@RequestParam(value = "id", required = false) Long pawnbrokerId, Model model) {
+        if (pawnbrokerId != null) {
+            Pawnbroker pawnbroker = pawnbrokerService.getPawnbrokerById(pawnbrokerId);
+            if (pawnbroker != null) {
+                model.addAttribute("pawnbrokers", Collections.singletonList(pawnbroker));
+            }
+        } else {
+            List<Pawnbroker> pawnbrokers = pawnbrokerService.getAllPawnbrokers();
+            model.addAttribute("pawnbrokers", pawnbrokers);
+        }
         return "pawnbroker/pawnbrokers";
     }
 
