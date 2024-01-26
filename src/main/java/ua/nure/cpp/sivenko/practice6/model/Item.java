@@ -1,20 +1,15 @@
 package ua.nure.cpp.sivenko.practice6.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class Item {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long itemId;
 
     private String itemName;
@@ -22,6 +17,7 @@ public class Item {
     private BigDecimal appraisedValue;
     private BigDecimal marketPriceMax;
     private BigDecimal marketPriceMin;
+
     private ItemStatus itemStatus;
 
     public enum ItemStatus {

@@ -1,7 +1,8 @@
 package ua.nure.cpp.sivenko.practice6.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,10 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class Pawnbroker {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long pawnbrokerId;
 
     private String firstName;
@@ -22,6 +20,5 @@ public class Pawnbroker {
     private String email;
     private String address;
 
-    @ManyToMany
     private List<ItemCategory> specializations;
 }

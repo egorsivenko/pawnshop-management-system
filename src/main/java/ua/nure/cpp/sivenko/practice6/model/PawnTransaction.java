@@ -1,10 +1,8 @@
 package ua.nure.cpp.sivenko.practice6.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,10 +10,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class PawnTransaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long transactionId;
 
     private long customerId;
@@ -27,6 +22,7 @@ public class PawnTransaction {
     private BigDecimal repaymentAmount;
     private LocalDate pawnDate;
     private LocalDate expirationDate;
+
     private TransactionStatus transactionStatus;
 
     public enum TransactionStatus {

@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Configuration
-@ConfigurationProperties(prefix = "spring.datasource")
+@ConfigurationProperties(prefix = "database")
 @Getter
 @Setter
 public class DatabaseConfig {
