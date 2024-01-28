@@ -72,8 +72,12 @@
             <td th:text="${itemCategory.itemCategoryId}"></td>
             <td th:text="${itemCategory.itemCategoryName}"></td>
             <td>
-                <div th:with="pawnbrokerIds=${itemCategory.activePawnbrokers.![pawnbrokerId]}">
-                    <div th:text="${pawnbrokerIds}"></div>
+                <div th:with="pawnbrokers=${itemCategory.activePawnbrokers}">
+                    <span th:each="pawnbroker, iterStat : ${pawnbrokers}">
+                        <a th:href="@{/pawnbrokers?id={pawnbrokerId}(pawnbrokerId=${pawnbroker.pawnbrokerId})}"
+                           th:text="${pawnbroker.pawnbrokerId}"></a>
+                        <span th:if="${!iterStat.last}">,</span>
+                    </span>
                 </div>
             </td>
             <td>
