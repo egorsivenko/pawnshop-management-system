@@ -7,7 +7,7 @@ CREATE TRIGGER pawn_transactions_after_update
 BEGIN
     IF NEW.transaction_status = 'Expired' THEN
         UPDATE items
-        SET item_status = 'Pawnshop property'
+        SET item_status = 'Pawnshop_property'
         WHERE item_id = NEW.item_id;
     ELSEIF NEW.transaction_status = 'Repaid' THEN
         UPDATE items

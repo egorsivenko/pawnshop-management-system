@@ -36,7 +36,7 @@ CREATE TABLE items (
     appraised_value DECIMAL(9, 2) NOT NULL,
     market_price_max DECIMAL(9, 2) GENERATED ALWAYS AS (appraised_value * 0.6) STORED,
     market_price_min DECIMAL(9, 2) GENERATED ALWAYS AS (appraised_value * 0.25) STORED,
-    item_status ENUM('Pawned', 'Redeemed', 'Pawnshop property') NOT NULL DEFAULT 'Pawned',
+    item_status ENUM('Pawned', 'Redeemed', 'Pawnshop_property') NOT NULL DEFAULT 'Pawned',
     FOREIGN KEY (item_category) REFERENCES item_categories(item_category_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
