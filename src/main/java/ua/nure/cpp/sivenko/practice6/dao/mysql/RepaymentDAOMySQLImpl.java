@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public class RepaymentDAOMySQLImpl implements RepaymentDAO {
     private static final String GET_BY_ID = "SELECT * FROM repayments WHERE repayment_id = ?";
-    private static final String GET_BY_TRANSACTION_ID = "SELECT * FROM repayments WHERE transaction_id = ?";
-    private static final String GET_BY_PAYMENT_METHOD = "SELECT * FROM repayments WHERE payment_method = ?";
     private static final String GET_ALL = "SELECT * FROM repayments";
 
     private static final String INSERT = "INSERT INTO repayments (transaction_id, payment_method) VALUES (?, ?)";
@@ -37,42 +35,6 @@ public class RepaymentDAOMySQLImpl implements RepaymentDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Repayment getRepaymentByTransactionId(long transactionId) {
-        try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_BY_TRANSACTION_ID)) {
-            ps.setLong(1, transactionId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) {
-                    return null;
-                }
-                return mapRepayment(rs);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<Repayment> getRepaymentsByPaymentMethod(long paymentMethodId) {
-        List<Repayment> repayments = new ArrayList<>();
-
-        try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_BY_PAYMENT_METHOD)) {
-            ps.setLong(1, paymentMethodId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    repayments.add(mapRepayment(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return repayments;
     }
 
     @Override

@@ -14,8 +14,6 @@ import java.util.List;
 @Repository
 public class ItemDAOMySQLImpl implements ItemDAO {
     private static final String GET_BY_ID = "SELECT * FROM items WHERE item_id = ?";
-    private static final String GET_BY_CATEGORY = "SELECT * FROM items WHERE item_category = ?";
-    private static final String GET_BY_STATUS = "SELECT * FROM items WHERE item_status = ?";
     private static final String GET_ALL = "SELECT * FROM items";
 
     private static final String INSERT = "INSERT INTO items (item_name, item_category, appraised_value) " +
@@ -42,44 +40,6 @@ public class ItemDAOMySQLImpl implements ItemDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<Item> getItemsByCategory(long itemCategoryId) {
-        List<Item> items = new ArrayList<>();
-
-        try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_BY_CATEGORY)) {
-            ps.setLong(1, itemCategoryId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    items.add(mapItem(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return items;
-    }
-
-    @Override
-    public List<Item> getItemsByStatus(ItemStatus itemStatus) {
-        List<Item> items = new ArrayList<>();
-
-        try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_BY_STATUS)) {
-            ps.setString(1, itemStatus.toString());
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    items.add(mapItem(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return items;
     }
 
     @Override

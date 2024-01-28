@@ -15,8 +15,6 @@ import java.util.List;
 public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     private static final String GET_BY_ID = "SELECT * FROM pawn_transactions WHERE transaction_id = ?";
     private static final String GET_BY_ITEM_ID = "SELECT * FROM pawn_transactions WHERE item_id = ?";
-    private static final String GET_BY_CUSTOMER_ID = "SELECT * FROM pawn_transactions WHERE customer_id = ?";
-    private static final String GET_BY_STATUS = "SELECT * FROM pawn_transactions WHERE transaction_status = ?";
     private static final String GET_ALL = "SELECT * FROM pawn_transactions";
 
     private static final String INSERT = "INSERT INTO pawn_transactions " +
@@ -58,47 +56,6 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<PawnTransaction> getPawnTransactionsByCustomerId(long customerId) {
-        List<PawnTransaction> pawnTransactions = new ArrayList<>();
-
-        if (customerId < 1) {
-            throw new IllegalArgumentException("Customer id cannot be <= 0");
-        }
-        try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_BY_CUSTOMER_ID)) {
-            ps.setLong(1, customerId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    pawnTransactions.add(mapPawnTransaction(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return pawnTransactions;
-    }
-
-    @Override
-    public List<PawnTransaction> getPawnTransactionsByStatus(TransactionStatus transactionStatus) {
-        List<PawnTransaction> pawnTransactions = new ArrayList<>();
-
-        try (Connection connection = databaseConfig.createConnection();
-             PreparedStatement ps = connection.prepareStatement(GET_BY_STATUS)) {
-            ps.setString(1, transactionStatus.toString());
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    pawnTransactions.add(mapPawnTransaction(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return pawnTransactions;
     }
 
     @Override
