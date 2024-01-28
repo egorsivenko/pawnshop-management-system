@@ -9,6 +9,8 @@ import java.util.List;
 public interface PawnTransactionDAO {
     PawnTransaction getPawnTransactionById(long pawnTransactionId);
 
+    PawnTransaction getPawnTransactionByItemId(long itemId);
+
     List<PawnTransaction> getPawnTransactionsByCustomerId(long customerId);
 
     List<PawnTransaction> getPawnTransactionsByStatus(TransactionStatus transactionStatus);

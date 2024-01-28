@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     private static final String GET_BY_ID = "SELECT * FROM pawn_transactions WHERE transaction_id = ?";
+    private static final String GET_BY_ITEM_ID = "SELECT * FROM pawn_transactions WHERE item_id = ?";
     private static final String GET_BY_CUSTOMER_ID = "SELECT * FROM pawn_transactions WHERE customer_id = ?";
     private static final String GET_BY_STATUS = "SELECT * FROM pawn_transactions WHERE transaction_status = ?";
     private static final String GET_ALL = "SELECT * FROM pawn_transactions";
@@ -30,6 +31,23 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
         try (Connection connection = databaseConfig.createConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, pawnTransactionId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    return null;
+                }
+                return mapPawnTransaction(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public PawnTransaction getPawnTransactionByItemId(long itemId) {
+        try (Connection connection = databaseConfig.createConnection();
+             PreparedStatement ps = connection.prepareStatement(GET_BY_ITEM_ID)) {
+            ps.setLong(1, itemId);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {

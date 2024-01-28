@@ -51,7 +51,7 @@ CREATE TABLE pawnbroker_specialization (
 CREATE TABLE pawn_transactions (
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
-    item_id INT,
+    item_id INT UNIQUE,
     pawnbroker_id INT,
     pawn_amount DECIMAL(9, 2) NOT NULL,
     interest_rate TINYINT NOT NULL DEFAULT 20,

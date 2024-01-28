@@ -30,6 +30,14 @@ public class PawnTransactionDAOCollectionImpl implements PawnTransactionDAO {
     }
 
     @Override
+    public PawnTransaction getPawnTransactionByItemId(long itemId) {
+        return pawnTransactions.stream()
+                .filter(pawnTransaction -> pawnTransaction.getItemId() == itemId)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public List<PawnTransaction> getPawnTransactionsByCustomerId(long customerId) {
         return pawnTransactions.stream()
                 .filter(pawnTransaction -> pawnTransaction.getCustomerId() == customerId)

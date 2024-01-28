@@ -40,6 +40,7 @@ public class PawnTransactionService {
     public void addPawnTransaction(PawnTransaction pawnTransaction) throws SQLException {
         Customer customer = customerDAO.getCustomerById(pawnTransaction.getCustomerId());
         Item item = itemDAO.getItemById(pawnTransaction.getItemId());
+        PawnTransaction pawnTransactionByItemId = pawnTransactionDAO.getPawnTransactionByItemId(pawnTransaction.getItemId());
         Pawnbroker pawnbroker = pawnbrokerDAO.getPawnbrokerById(pawnTransaction.getPawnbrokerId());
 
         if (customer == null) {
@@ -47,11 +48,14 @@ public class PawnTransactionService {
         } else if (item == null) {
             throw new SQLException("Item with id '" + pawnTransaction.getItemId() + "' does not exists");
         } else if (item.getItemStatus() != Item.ItemStatus.PAWNED) {
-            throw new SQLException("Item with id '" + pawnTransaction.getItemId() + "' cannot be pawned");
+            throw new SQLException("Item with id '" + pawnTransaction.getItemId()
+                    + "' cannot be pawned due to its status - " + item.getItemStatus());
+        } else if (pawnTransactionByItemId != null) {
+            throw new SQLException("Item with id '" + pawnTransaction.getItemId()
+                    + "' already exists in transaction with id '" + pawnTransactionByItemId.getTransactionId() + "'");
         } else if (pawnbroker == null) {
             throw new SQLException("Pawnbroker with id '" + pawnTransaction.getPawnbrokerId() + "' does not exists");
         }
-
         pawnTransactionDAO.addPawnTransaction(pawnTransaction);
     }
 }
