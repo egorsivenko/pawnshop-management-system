@@ -3,7 +3,6 @@ package ua.nure.cpp.sivenko.practice6.dao.collection;
 import ua.nure.cpp.sivenko.practice6.dao.PawnbrokerDAO;
 import ua.nure.cpp.sivenko.practice6.model.Pawnbroker;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,15 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PawnbrokerDAOCollectionImpl implements PawnbrokerDAO {
     private final List<Pawnbroker> pawnbrokers = new ArrayList<>();
     private final AtomicInteger id = new AtomicInteger(1);
-
-    public PawnbrokerDAOCollectionImpl() {
-        addPawnbroker(new Pawnbroker(1, "Daniel", "Runolfsson", LocalDate.now(), "983-346-2564",
-                "Daniel.Runolfsson@gmail.com", "712 Langosh Hollow", new ArrayList<>()));
-        addPawnbroker(new Pawnbroker(2, "Sheila", "Ernser", LocalDate.now(), "165-155-8744",
-                "Sheila.Ernser@gmail.com", "6034 Green Union", new ArrayList<>()));
-        addPawnbroker(new Pawnbroker(3, "Terence", "Wehner", LocalDate.now(), "586-868-0447",
-                "Terence.Wehner42@yahoo.com", "897 Hillary Trafficway", new ArrayList<>()));
-    }
 
     @Override
     public Pawnbroker getPawnbrokerById(long pawnbrokerId) {
@@ -58,11 +48,17 @@ public class PawnbrokerDAOCollectionImpl implements PawnbrokerDAO {
 
     @Override
     public void updatePawnbroker(long pawnbrokerId, Pawnbroker pawnbroker) {
-        pawnbrokers.set((int) pawnbrokerId - 1, pawnbroker);
+        pawnbrokers.stream()
+                .filter(p -> p.getPawnbrokerId() == pawnbrokerId)
+                .findFirst()
+                .ifPresent(p -> {
+                    int index = pawnbrokers.indexOf(p);
+                    pawnbrokers.set(index, pawnbroker);
+                });
     }
 
     @Override
     public void deletePawnbroker(long pawnbrokerId) {
-        pawnbrokers.remove((int) pawnbrokerId - 1);
+        pawnbrokers.removeIf(pawnbroker -> pawnbroker.getPawnbrokerId() == pawnbrokerId);
     }
 }

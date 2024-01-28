@@ -11,12 +11,6 @@ public class ItemCategoryDAOCollectionImpl implements ItemCategoryDAO {
     private final List<ItemCategory> itemCategories = new ArrayList<>();
     private final AtomicInteger id = new AtomicInteger(1);
 
-    public ItemCategoryDAOCollectionImpl() {
-        addItemCategory(new ItemCategory(1, "Jewelry", new ArrayList<>()));
-        addItemCategory(new ItemCategory(2, "Electronics", new ArrayList<>()));
-        addItemCategory(new ItemCategory(3, "Clothing", new ArrayList<>()));
-    }
-
     @Override
     public ItemCategory getItemCategoryById(long itemCategoryId) {
         return itemCategories.stream()
@@ -38,11 +32,14 @@ public class ItemCategoryDAOCollectionImpl implements ItemCategoryDAO {
 
     @Override
     public void updateItemCategoryName(long itemCategoryId, String itemCategoryName) {
-        itemCategories.get((int) itemCategoryId - 1).setItemCategoryName(itemCategoryName);
+        itemCategories.stream()
+                .filter(itemCategory -> itemCategory.getItemCategoryId() == itemCategoryId)
+                .findFirst()
+                .ifPresent(itemCategory -> itemCategory.setItemCategoryName(itemCategoryName));
     }
 
     @Override
     public void deleteItemCategory(long itemCategoryId) {
-        itemCategories.remove((int) itemCategoryId - 1);
+        itemCategories.removeIf(itemCategory -> itemCategory.getItemCategoryId() == itemCategoryId);
     }
 }

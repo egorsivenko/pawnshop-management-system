@@ -11,12 +11,6 @@ public class CustomerDAOCollectionImpl implements CustomerDAO {
     private final List<Customer> customers = new ArrayList<>();
     private final AtomicInteger id = new AtomicInteger(1);
 
-    public CustomerDAOCollectionImpl() {
-        addCustomer(new Customer(12, "Daniel", "Runolfsson", "983-346-2564", "Daniel.Runolfsson@gmail.com"));
-        addCustomer(new Customer(5, "Sheila", "Ernser", "165-155-8744", "Sheila.Ernser@gmail.com"));
-        addCustomer(new Customer(23, "Terence", "Wehner", "586-868-0447", "Terence.Wehner42@yahoo.com"));
-    }
-
     @Override
     public Customer getCustomerById(long customerId) {
         return customers.stream()
@@ -54,11 +48,17 @@ public class CustomerDAOCollectionImpl implements CustomerDAO {
 
     @Override
     public void updateCustomer(long customerId, Customer customer) {
-        customers.set((int) customerId - 1, customer);
+        customers.stream()
+                .filter(c -> c.getCustomerId() == customerId)
+                .findFirst()
+                .ifPresent(c -> {
+                    int index = customers.indexOf(c);
+                    customers.set(index, customer);
+                });
     }
 
     @Override
     public void deleteCustomer(long customerId) {
-        customers.remove((int) customerId - 1);
+        customers.removeIf(customer -> customer.getCustomerId() == customerId);
     }
 }

@@ -11,11 +11,6 @@ public class PaymentMethodDAOCollectionImpl implements PaymentMethodDAO {
     private final List<PaymentMethod> paymentMethods = new ArrayList<>();
     private final AtomicInteger id = new AtomicInteger(1);
 
-    public PaymentMethodDAOCollectionImpl() {
-        addPaymentMethod("Cash");
-        addPaymentMethod("Credit Card");
-    }
-
     @Override
     public PaymentMethod getPaymentMethodById(long paymentMethodId) {
         return paymentMethods.stream()
@@ -36,11 +31,14 @@ public class PaymentMethodDAOCollectionImpl implements PaymentMethodDAO {
 
     @Override
     public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) {
-        paymentMethods.get((int) paymentMethodId - 1).setPaymentMethodName(paymentMethodName);
+        paymentMethods.stream()
+                .filter(paymentMethod -> paymentMethod.getPaymentMethodId() == paymentMethodId)
+                .findFirst()
+                .ifPresent(paymentMethod -> paymentMethod.setPaymentMethodName(paymentMethodName));
     }
 
     @Override
     public void deletePaymentMethod(long paymentMethodId) {
-        paymentMethods.remove((int) paymentMethodId - 1);
+        paymentMethods.removeIf(paymentMethod -> paymentMethod.getPaymentMethodId() == paymentMethodId);
     }
 }

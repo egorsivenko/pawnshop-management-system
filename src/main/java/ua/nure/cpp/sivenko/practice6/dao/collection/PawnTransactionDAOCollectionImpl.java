@@ -4,8 +4,6 @@ import ua.nure.cpp.sivenko.practice6.dao.PawnTransactionDAO;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction.TransactionStatus;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,12 +12,6 @@ import java.util.stream.Collectors;
 public class PawnTransactionDAOCollectionImpl implements PawnTransactionDAO {
     private final List<PawnTransaction> pawnTransactions = new ArrayList<>();
     private final AtomicInteger id = new AtomicInteger(1);
-
-    public PawnTransactionDAOCollectionImpl() {
-        addPawnTransaction(new PawnTransaction(1, 1, 4, 8, BigDecimal.valueOf(426),
-                20, 1, BigDecimal.valueOf(511.20), LocalDate.now(),
-                LocalDate.now().plusMonths(1), TransactionStatus.ACTIVE));
-    }
 
     @Override
     public PawnTransaction getPawnTransactionById(long pawnTransactionId) {
