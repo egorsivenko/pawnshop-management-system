@@ -1,8 +1,7 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ua.nure.cpp.sivenko.practice6.config.DatabaseConfig;
+import ua.nure.cpp.sivenko.practice6.db.DataSource;
 import ua.nure.cpp.sivenko.practice6.dao.ItemDAO;
 import ua.nure.cpp.sivenko.practice6.model.Item;
 import ua.nure.cpp.sivenko.practice6.model.Item.ItemStatus;
@@ -22,12 +21,9 @@ public class ItemDAOMySQLImpl implements ItemDAO {
             "SET item_name = ?, item_category = ?, appraised_value = ? WHERE item_id = ?";
     private static final String DELETE = "DELETE FROM items WHERE item_id = ?";
 
-    @Autowired
-    private DatabaseConfig databaseConfig;
-
     @Override
     public Item getItemById(long itemId) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, itemId);
 
@@ -46,7 +42,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
 
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -60,7 +56,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void addItem(Item item) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, item.getItemName());
             ps.setLong(2, item.getItemCategoryId());
@@ -74,7 +70,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void updateItem(long itemId, Item item) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, item.getItemName());
             ps.setLong(2, item.getItemCategoryId());
@@ -89,7 +85,7 @@ public class ItemDAOMySQLImpl implements ItemDAO {
 
     @Override
     public void deleteItem(long itemId) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, itemId);
 

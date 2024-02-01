@@ -1,10 +1,9 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ua.nure.cpp.sivenko.practice6.dao.PaymentMethodDAO;
 import ua.nure.cpp.sivenko.practice6.model.PaymentMethod;
-import ua.nure.cpp.sivenko.practice6.config.DatabaseConfig;
+import ua.nure.cpp.sivenko.practice6.db.DataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,12 +19,9 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
             "SET payment_method_name = ? WHERE payment_method_id = ?";
     private static final String DELETE = "DELETE FROM payment_methods WHERE payment_method_id = ?";
 
-    @Autowired
-    private DatabaseConfig databaseConfig;
-
     @Override
     public PaymentMethod getPaymentMethodById(long paymentMethodId) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, paymentMethodId);
 
@@ -44,7 +40,7 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
     public List<PaymentMethod> getAllPaymentMethods() {
         List<PaymentMethod> paymentMethods = new ArrayList<>();
 
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -58,7 +54,7 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
 
     @Override
     public void addPaymentMethod(String paymentMethodName) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setString(1, paymentMethodName);
 
@@ -70,7 +66,7 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
 
     @Override
     public void updatePaymentMethodName(long paymentMethodId, String paymentMethodName) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE)) {
             ps.setString(1, paymentMethodName);
             ps.setLong(2, paymentMethodId);
@@ -83,7 +79,7 @@ public class PaymentMethodDAOMySQLImpl implements PaymentMethodDAO {
 
     @Override
     public void deletePaymentMethod(long paymentMethodId) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE)) {
             ps.setLong(1, paymentMethodId);
 

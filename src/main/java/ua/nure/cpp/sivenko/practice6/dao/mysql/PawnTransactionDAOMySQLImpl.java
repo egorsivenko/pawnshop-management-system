@@ -1,8 +1,7 @@
 package ua.nure.cpp.sivenko.practice6.dao.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ua.nure.cpp.sivenko.practice6.config.DatabaseConfig;
+import ua.nure.cpp.sivenko.practice6.db.DataSource;
 import ua.nure.cpp.sivenko.practice6.dao.PawnTransactionDAO;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction;
 import ua.nure.cpp.sivenko.practice6.model.PawnTransaction.TransactionStatus;
@@ -21,12 +20,9 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
             "(customer_id, item_id, pawnbroker_id, pawn_amount, interest_rate, monthly_period) " +
             "VALUES (?, ?, ?, ?, ?, ?)";
 
-    @Autowired
-    private DatabaseConfig databaseConfig;
-
     @Override
     public PawnTransaction getPawnTransactionById(long pawnTransactionId) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ID)) {
             ps.setLong(1, pawnTransactionId);
 
@@ -43,7 +39,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
 
     @Override
     public PawnTransaction getPawnTransactionByItemId(long itemId) {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(GET_BY_ITEM_ID)) {
             ps.setLong(1, itemId);
 
@@ -62,7 +58,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
     public List<PawnTransaction> getAllPawnTransactions() {
         List<PawnTransaction> pawnTransactions = new ArrayList<>();
 
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
@@ -76,7 +72,7 @@ public class PawnTransactionDAOMySQLImpl implements PawnTransactionDAO {
 
     @Override
     public void addPawnTransaction(PawnTransaction pawnTransaction) throws SQLException {
-        try (Connection connection = databaseConfig.createConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT)) {
             ps.setLong(1, pawnTransaction.getCustomerId());
             ps.setLong(2, pawnTransaction.getItemId());
