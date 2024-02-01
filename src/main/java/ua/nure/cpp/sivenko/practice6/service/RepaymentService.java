@@ -35,6 +35,8 @@ public class RepaymentService {
             throw new SQLException("Pawn Transaction with id '" + transactionId + "' does not exists");
         } else if (pawnTransaction.getTransactionStatus() == PawnTransaction.TransactionStatus.REPAID) {
             throw new SQLException("Pawn Transaction with id '" + transactionId + "' is already repaid");
+        } else if (pawnTransaction.getTransactionStatus() == PawnTransaction.TransactionStatus.EXPIRED) {
+            throw new SQLException("Pawn Transaction with id '" + transactionId + "' is expired");
         }
         repaymentDAO.addRepayment(repayment);
     }
