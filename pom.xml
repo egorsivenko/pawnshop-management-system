@@ -39,6 +39,11 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+			<version>10.7.1</version>
+		</dependency>
+		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>5.1.0</version>
@@ -67,6 +72,17 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>10.7.1</version>
+				<configuration>
+					<url>jdbc:mysql://localhost:3306/pawnshop</url>
+					<user>root</user>
+					<password>strong_password</password>
 				</configuration>
 			</plugin>
 		</plugins>
